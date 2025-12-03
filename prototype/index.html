@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻味金陵小程序原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tdesign-miniprogram@1.4.2/dist/tdesign.min.css" rel="stylesheet">
+    <style>
+        .iphone-frame {
+            width: 393px;
+            height: 852px;
+            border-radius: 44px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border: 10px solid #000;
+            position: relative;
+        }
+        .iphone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 20px;
+            background: #000;
+            border-radius: 0 0 10px 10px;
+            z-index: 10;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-12 text-gray-800">寻味金陵小程序原型</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <!-- 食客端 -->
+            <div class="text-center">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">食客端</h2>
+                <div class="iphone-frame">
+                    <iframe src="guest.html" title="食客端"></iframe>
+                </div>
+            </div>
+            
+            <!-- 商家端 -->
+            <div class="text-center">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">商家端</h2>
+                <div class="iphone-frame">
+                    <iframe src="host.html" title="商家端"></iframe>
+                </div>
+            </div>
+            
+            <!-- 管理员端 -->
+            <div class="text-center">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">管理员端</h2>
+                <div class="iphone-frame">
+                    <iframe src="administrator.html" title="管理员端"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

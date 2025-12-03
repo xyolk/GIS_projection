@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻味金陵 - 商家端</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tdesign-miniprogram@1.4.2/dist/tdesign.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            max-width: 393px;
+            margin: 0 auto;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .page {
+            display: none;
+            min-height: 852px;
+            background-color: white;
+        }
+        .page.active {
+            display: block;
+        }
+        .tabbar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 393px;
+            background-color: white;
+            border-top: 1px solid #e8e8e8;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 100;
+        }
+        .tabbar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .tabbar-item.active {
+            color: #0066ff;
+        }
+        .tabbar-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px;
+            color: white;
+        }
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .chart {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 12px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        .rating-bar {
+            height: 8px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .rating-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);
+            border-radius: 4px;
+        }
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .food-item:last-child {
+            border-bottom: none;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #0066ff;
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #0066ff;
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 首页/数据驾驶舱 -->
+    <div id="dashboard" class="page active">
+        <div class="header">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold">南京大排档</h1>
+                    <div class="text-sm mt-1">欢迎回来，李老板</div>
+                </div>
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <div class="flex justify-between mb-4">
+                <h2 class="text-xl font-semibold">今日营业概览</h2>
+                <div class="text-sm text-gray-500">
+                    <span>昨天</span>
+                    <i class="fas fa-chevron-down ml-1"></i>
+                </div>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="stat-card">
+                    <div class="text-sm opacity-80">今日订单</div>
+                    <div class="text-2xl font-bold mt-1">128</div>
+                    <div class="text-sm mt-2 flex items-center">
+                        <i class="fas fa-arrow-up text-green-300 mr-1"></i>
+                        <span>15% 较昨日</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm opacity-80">今日营收</div>
+                    <div class="text-2xl font-bold mt-1">¥10,588</div>
+                    <div class="text-sm mt-2 flex items-center">
+                        <i class="fas fa-arrow-up text-green-300 mr-1"></i>
+                        <span>22% 较昨日</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="stat-card">
+                    <div class="text-sm opacity-80">平均客单价</div>
+                    <div class="text-2xl font-bold mt-1">¥83</div>
+                    <div class="text-sm mt-2 flex items-center">
+                        <i class="fas fa-arrow-down text-red-300 mr-1"></i>
+                        <span>2% 较昨日</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="text-sm opacity-80">座位利用率</div>
+                    <div class="text-2xl font-bold mt-1">78%</div>
+                    <div class="text-sm mt-2 flex items-center">
+                        <i class="fas fa-arrow-up text-green-300 mr-1"></i>
+                        <span>5% 较昨日</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 营业趋势图 -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-3">营收趋势 (近7天)</h3>
+                <div class="chart">
+                    <div class="text-gray-500">图表加载中...</div>
+                </div>
+            </div>
+            
+            <!-- 热门菜品 -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-3">热门菜品</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-red-400 to-orange-500 rounded mr-3"></div>
+                        <div class="flex-1">
+                            <div class="font-medium">盐水鸭</div>
+                            <div class="text-sm text-gray-500">销量: 45份</div>
+                        </div>
+                        <div class="text-sm text-blue-500">¥48</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-500 rounded mr-3"></div>
+                        <div class="flex-1">
+                            <div class="font-medium">小笼包</div>
+                            <div class="text-sm text-gray-500">销量: 38份</div>
+                        </div>
+                        <div class="text-sm text-blue-500">¥32</div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-amber-500 rounded mr-3"></div>
+                        <div class="flex-1">
+                            <div class="font-medium">鸭血粉丝汤</div>
+                            <div class="text-sm text-gray-500">销量: 32份</div>
+                        </div>
+                        <div class="text-sm text-blue-500">¥22</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 店铺信息管理 -->
+    <div id="manage" class="page">
+        <div class="header">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold">店铺管理</h1>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <!-- 基本信息 -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-3">基本信息</h3>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">店铺名称</div>
+                        <div class="text-sm text-gray-500">用于展示在平台上的名称</div>
+                    </div>
+                    <div class="text-right">
+                        <div>南京大排档</div>
+                        <i class="fas fa-chevron-right text-gray-400 mt-1"></i>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">店铺分类</div>
+                        <div class="text-sm text-gray-500">选择合适的分类</div>
+                    </div>
+                    <div class="text-right">
+                        <div>南京菜</div>
+                        <i class="fas fa-chevron-right text-gray-400 mt-1"></i>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">联系电话</div>
+                        <div class="text-sm text-gray-500">用于用户联系</div>
+                    </div>
+                    <div class="text-right">
+                        <div>025-88888888</div>
+                        <i class="fas fa-chevron-right text-gray-400 mt-1"></i>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">地址</div>
+                        <div class="text-sm text-gray-500">店铺详细地址</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-gray-700">南京市秦淮区夫子庙景区</div>
+                        <i class="fas fa-chevron-right text-gray-400 mt-1"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 营业时间 -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-3">营业时间</h3>
+                <div class="setting-item">
+                    <div class="font-medium">营业状态</div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">周一至周五</div>
+                        <div class="text-sm text-gray-500">10:00 - 22:00</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+                <div class="setting-item">
+                    <div>
+                        <div class="font-medium">周六至周日</div>
+                        <div class="text-sm text-gray-500">09:00 - 23:00</div>
+                    </div>
+                    <i class="fas fa-chevron-right text-gray-400"></i>
+                </div>
+            </div>
+            
+            <!-- 菜品管理 -->
+            <div class="card">
+                <h3 class="text-lg font-semibold mb-3">菜品管理</h3>
+                <div class="food-item">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-red-400 to-orange-500 rounded mr-3"></div>
+                        <div>
+                            <div class="font-medium">盐水鸭</div>
+                            <div class="text-sm text-gray-500">¥48</div>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="food-item">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-teal-500 rounded mr-3"></div>
+                        <div>
+                            <div class="font-medium">小笼包</div>
+                            <div class="text-sm text-gray-500">¥32</div>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="food-item">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-amber-500 rounded mr-3"></div>
+                        <div>
+                            <div class="font-medium">鸭血粉丝汤</div>
+                            <div class="text-sm text-gray-500">¥22</div>
+                        </div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="w-full bg-blue-500 text-white font-bold py-3 rounded-full mt-4">
+                    <i class="fas fa-plus mr-2"></i>添加菜品
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 评价智能中心 -->
+    <div id="review" class="page">
+        <div class="header">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-bold">评价智能中心</h1>
+            </div>
+        </div>
+        
+        <div class="p-4">
+            <div class="text-center mb-6">
+                <div class="text-4xl font-bold">4.8</div>
+                <div class="flex items-center justify-center mt-2">
+                    <span class="text-yellow-500 text-xl">★★★★★</span>
+                    <span class="text-sm text-gray-500 ml-2">基于258条评价</span>
+                </div>
+                <div class="text-sm text-gray-500 mt-1">评分较上周上升0.2</div>
+            </div>
+            
+            <!-- 评分分布 -->
+            <div class="card mb-6">
+                <h3 class="text-lg font-semibold mb-3">评分分布</h3>
+                <div class="space-y-3">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <div class="flex items-center">
+                                <span>5星</span>
+                                <span class="text-yellow-500 ml-1">★</span>
+                            </div>
+                            <span>78%</span>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 78%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <div class="flex items-center">
+                                <span>4星</span>
+                                <span class="text-yellow-500 ml-1">★</span>
+                            </div>
+                            <span>15%</span>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 15%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <div class="flex items-center">
+                                <span>3星</span>
+                                <span class="text-yellow-500 ml-1">★</span>
+                            </div>
+                            <span>5%</span>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 5%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <div class="flex items-center">
+                                <span>2星</span>
+                                <span class="text-yellow-500 ml-1">★</span>
+                            </div>
+                            <span>1%</span>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <div class="flex items-center">
+                                <span>1星</span>
+                                <span class="text-yellow-500 ml-1">★</span>
+                            </div>
+                            <span>1%</span>
+                        </div>
+                        <div class="rating-bar">
+                            <div class="rating-fill" style="width: 1%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 评价标签 -->
+            <div class="card mb-6">
+                <h3 class="text-lg font-semibold mb-3">评价标签</h3>
+                <div class="flex flex-wrap">
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">味道好</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">服务好</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">环境好</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">正宗</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">性价比高</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">上菜快</div>
+                    <div class="bg-blue-100 text-blue-800 rounded-full px-4 py-1 text-sm m-1">分量足</div>
+                    <div class="bg-red-100 text-red-800 rounded-full px-4 py-1 text-sm m-1">排队久</div>
+                </div>
+            </div>
+            
+            <!-- 最新评价 -->
+            <div>
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-lg font-semibold">最新评价</h3>
+                    <div class="text-sm text-blue-500">查看全部</div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="card">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                                <div>
+                                    <div class="font-medium">张三</div>
+                                    <div class="text-sm text-gray-500">昨天 12:30</div>
+                                </div>
+                            </div>
+                            <div class="text-yellow-500">★★★★★</div>
+                        </div>
+                        <div class="mt-3">盐水鸭很正宗，环境也不错，下次还会再来！</div>
+                        <div class="flex mt-3">
+                            <div class="w-16 h-16 bg-gray-200 rounded mr-2"></div>
+                            <div class="w-16 h-16 bg-gray-200 rounded"></div>
+                        </div>
+                        <button class="mt-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">
+                            回复评价
+                        </button>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
+                                <div>
+                                    <div class="font-medium">李四</div>
+                                    <div class="text-sm text-gray-500">今天 10:15</div>
+                                </div>
+                            </div>
+                            <div class="text-yellow-500">★★★★☆</div>
+                        </div>
+                        <div class="mt-3">菜品味道不错，就是排队时间有点长，希望能改进一下排队系统。</div>
+                        <button class="mt-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm">
+                            回复评价
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="tabbar">
+        <div class="tabbar-item active" onclick="showPage('dashboard')">
+            <i class="fas fa-chart-line"></i>
+            <div>数据驾驶舱</div>
+        </div>
+        <div class="tabbar-item" onclick="showPage('manage')">
+            <i class="fas fa-store"></i>
+            <div>店铺管理</div>
+        </div>
+        <div class="tabbar-item" onclick="showPage('review')">
+            <i class="fas fa-star"></i>
+            <div>评价中心</div>
+        </div>
+    </div>
+    
+    <script>
+        function showPage(pageId) {
+            // 隐藏所有页面
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // 显示目标页面
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active');
+            
+            // 更新底部导航栏
+            const tabbarItems = document.querySelectorAll('.tabbar-item');
+            tabbarItems.forEach(item => item.classList.remove('active'));
+            
+            if (pageId === 'dashboard') {
+                tabbarItems[0].classList.add('active');
+            } else if (pageId === 'manage') {
+                tabbarItems[1].classList.add('active');
+            } else if (pageId === 'review') {
+                tabbarItems[2].classList.add('active');
+            }
+        }
+        
+        // 模拟图表加载
+        setTimeout(() => {
+            const chartElements = document.querySelectorAll('.chart');
+            chartElements.forEach(el => {
+                el.innerHTML = '<div class="text-gray-500">[模拟图表]</div>';
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
