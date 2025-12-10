@@ -1,0 +1,187 @@
+<view class="page-container">
+  
+  <view class="custom-nav-bar">
+    <text class="nav-title">我的社媒</text>
+    <view class="nav-action">
+      <t-icon name="setting" size="48rpx" color="#fff" />
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="scroll-content">
+    
+    <view class="header-bg"></view>
+
+    <view class="profile-card">
+      <view class="profile-layout">
+        <view class="avatar-wrapper">
+          <t-icon name="user" size="60rpx" color="#ff9800" />
+        </view>
+        <view class="profile-info">
+          <view class="name-row">
+            <text class="user-name">美食爱好者</text>
+            <view class="level-tag">Lv.8</view>
+          </view>
+          <view class="location-row">
+            <t-icon name="location" size="28rpx" color="rgba(255,255,255,0.9)" />
+            <text class="location-text">南京市 - 秦淮区</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="function-grid">
+      <view class="grid-row">
+        <view class="grid-item">
+          <view class="icon-circle bg-orange"><t-icon name="chat" size="40rpx" color="#ff9800" /></view>
+          <text class="grid-text">新增评语</text>
+        </view>
+        <view class="grid-item">
+          <view class="icon-circle bg-blue"><t-icon name="camera" size="40rpx" color="#2196f3" /></view>
+          <text class="grid-text">新增照片</text>
+        </view>
+        <view class="grid-item">
+          <view class="icon-circle bg-green"><t-icon name="location" size="40rpx" color="#4caf50" /></view>
+          <text class="grid-text">打卡</text>
+        </view>
+        <view class="grid-item">
+          <view class="icon-circle bg-purple"><t-icon name="chart-bar" size="40rpx" color="#9c27b0" /></view>
+          <text class="grid-text">个人画像</text>
+        </view>
+      </view>
+      <button class="edit-btn">编辑资料</button>
+    </view>
+
+    <view class="section-card">
+      <view class="section-header">
+        <text class="section-title">最近浏览</text>
+        <view class="section-more">
+          <text>显示更多</text>
+          <t-icon name="chevron-right" size="32rpx" />
+        </view>
+      </view>
+      <view class="recent-grid">
+        <view class="recent-item">
+          <view class="recent-img bg-orange-light"></view>
+          <text class="recent-name">南京大牌档</text>
+          <view class="recent-rating">
+            <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
+            <text>4.8</text>
+          </view>
+        </view>
+        <view class="recent-item">
+          <view class="recent-img bg-teal-light"></view>
+          <text class="recent-name">小厨娘淮扬菜</text>
+          <view class="recent-rating">
+            <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
+            <text>4.6</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-title mb-3">个人口味分析</view>
+      <view class="progress-list">
+        <view class="progress-item">
+          <view class="progress-label">
+            <text>咸度偏好</text>
+            <text class="progress-val">70%</text>
+          </view>
+          <view class="progress-track">
+            <view class="progress-bar" style="width: 70%;"></view>
+          </view>
+        </view>
+        <view class="progress-item">
+          <view class="progress-label">
+            <text>甜度偏好</text>
+            <text class="progress-val">50%</text>
+          </view>
+          <view class="progress-track">
+            <view class="progress-bar" style="width: 50%;"></view>
+          </view>
+        </view>
+        <view class="progress-item">
+          <view class="progress-label">
+            <text>辣度偏好</text>
+            <text class="progress-val">30%</text>
+          </view>
+          <view class="progress-track">
+            <view class="progress-bar" style="width: 30%;"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card no-padding">
+      <view class="card-header-border">我的动态</view>
+      <view class="feed-content">
+        <view class="feed-row">
+          <view class="feed-avatar">
+            <t-icon name="user" size="40rpx" color="#ff9800" />
+          </view>
+          <view class="feed-main">
+            <view class="feed-user">美食爱好者</view>
+            <view class="feed-text">今天在南京大牌档享用了美味的盐水鸭，口感绝佳！</view>
+            <view class="feed-images">
+              <view class="feed-img bg-orange-light"></view>
+              <view class="feed-img bg-yellow-light"></view>
+              <view class="feed-img bg-red-light"></view>
+            </view>
+            <view class="feed-footer">
+              <text>2小时前</text>
+              <view class="feed-stats">
+                <text>32赞</text>
+                <text class="ml-2">8评论</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="menu-list">
+      <view class="menu-item">
+        <view class="menu-left">
+          <t-icon name="notification" size="40rpx" color="#ff9800" />
+          <text class="menu-text">消息通知</text>
+        </view>
+        <t-icon name="chevron-right" size="40rpx" color="#ccc" />
+      </view>
+      <view class="menu-item">
+        <view class="menu-left">
+          <t-icon name="calendar" size="40rpx" color="#2196f3" />
+          <text class="menu-text">预定记录</text>
+        </view>
+        <t-icon name="chevron-right" size="40rpx" color="#ccc" />
+      </view>
+      <view class="menu-item">
+        <view class="menu-left">
+          <t-icon name="location" size="40rpx" color="#4caf50" />
+          <text class="menu-text">导航记录</text>
+        </view>
+        <t-icon name="chevron-right" size="40rpx" color="#ccc" />
+      </view>
+    </view>
+
+    <view style="height: 140rpx;"></view>
+  </scroll-view>
+
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="switchTab" data-tab="explore">
+      <t-icon name="compass" size="48rpx" />
+      <text class="tab-text">探索</text>
+    </view>
+    <view class="tab-item active" bindtap="switchTab" data-tab="social">
+      <t-icon name="usergroup" size="48rpx" />
+      <text class="tab-text">社媒</text>
+    </view>
+    <view class="tab-item" bindtap="switchTab" data-tab="collection">
+      <t-icon name="heart" size="48rpx" />
+      <text class="tab-text">收藏</text>
+    </view>
+    <view class="tab-item" bindtap="switchTab" data-tab="settings">
+      <t-icon name="setting" size="48rpx" />
+      <text class="tab-text">设置</text>
+    </view>
+  </view>
+</view>

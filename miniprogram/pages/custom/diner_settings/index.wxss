@@ -1,0 +1,251 @@
+/* pages/custom/diner_settings/index.ts.wxss */
+/** pages/custom/diner_settings/index.wxss */
+page {
+  height: 100vh;
+  background-color: #f5f5f5;
+  font-family: "Songti SC", "SimSun", "STSong", "serif";
+  overflow: hidden;
+}
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部导航栏 */
+.custom-header {
+  background-color: white;
+  height: 80rpx;
+
+  box-sizing: content-box; 
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+  z-index: 10; /* 保证层级最高 */
+
+  /* flex-shrink: 0 防止被挤压 */
+  flex-shrink: 0; 
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.header-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 滚动区域 */
+.scroll-content {
+  flex: 1;
+  overflow: hidden; 
+  width: 100%;
+}
+
+/* 通用卡片容器 */
+.section-card {
+  background-color: white;
+  padding: 30rpx;
+  margin-top: 20rpx;
+}
+
+.user-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-placeholder {
+  width: 100rpx;
+  height: 100rpx;
+  background-color: #fff3e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.user-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.user-desc {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 6rpx;
+}
+
+.mini-logout-btn {
+  font-size: 26rpx;
+  color: #ff9800;
+  font-weight: 500;
+}
+
+/* 设置分组容器 */
+.section-group {
+  background-color: white;
+  margin-top: 20rpx;
+}
+
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.group-title-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.group-title-text {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+  transition: background-color 0.2s;
+}
+
+.setting-item:active {
+  background-color: #fafafa;
+}
+
+.no-border { border-bottom: none; }
+
+.item-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.item-label {
+  font-size: 28rpx;
+  color: #4b5563; /* gray-700 */
+}
+
+.item-right {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.item-value {
+  font-size: 26rpx;
+  color: #9ca3af; /* gray-500 */
+}
+
+.item-value.green { color: #4caf50; }
+
+/* 模拟 Toggle 开关 */
+.toggle-switch {
+  width: 90rpx;
+  height: 50rpx;
+  background-color: #e5e7eb; /* gray-200 */
+  border-radius: 25rpx;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.toggle-circle {
+  width: 42rpx;
+  height: 42rpx;
+  background-color: white; /* 默认灰色背景配灰色圆点? HTML里写的是 gray-400 for off, orange for on */
+  border-radius: 50%;
+  position: absolute;
+  top: 4rpx;
+  left: 4rpx;
+  transition: all 0.3s;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+/* 激活状态 */
+.toggle-switch.active {
+  background-color: #ff9800; /* 橙色背景 */
+}
+
+.toggle-switch.active .toggle-circle {
+  left: 44rpx; /* 移动到右边 */
+  background-color: white;
+}
+
+/* 底部按钮 */
+.footer-area {
+  padding: 40rpx;
+}
+
+.logout-btn {
+  width: 100% !important;
+  height: 100rpx !important;
+  line-height: 100rpx !important;
+  border-radius: 30rpx !important;
+  font-size: 32rpx !important;
+  font-weight: 600 !important;
+  color: white !important;
+  border: none !important;
+  /* 红色渐变 */
+  background: linear-gradient(135deg, #ff5252 0%, #f44336 100%) !important;
+  box-shadow: 0 10rpx 20rpx rgba(244, 67, 54, 0.3);
+}
+
+.logout-btn:active {
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%) !important;
+}
+
+/* 底部 TabBar */
+.tab-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 110rpx;
+  background-color: white;
+  border-top: 1rpx solid #e5e7eb;
+  display: flex;
+  padding-bottom: env(safe-area-inset-bottom);
+  z-index: 100;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+}
+
+.tab-item.active {
+  color: #ff9800;
+}
+
+.tab-text {
+  font-size: 20rpx;
+  margin-top: 6rpx;
+}

@@ -1,7 +1,13 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/custom/diner_login/index",
+    "pages/custom/diner_register/index",
+    "pages/custom/diner_explore/index",
+    "pages/custom/diner_social/index",
+    "pages/custom/diner_collection/index",
+    "pages/custom/diner_settings/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -9,5 +15,5 @@
     "navigationBarBackgroundColor": "#ffffff"
   },
   "componentFramework": "glass-easel",
-  "lazyCodeLoading": "requiredComponents"  
+  "lazyCodeLoading": "requiredComponents"
 }

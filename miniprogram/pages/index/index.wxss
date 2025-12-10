@@ -1,62 +1,137 @@
 /**index.wxss**/
 page {
-  height: 100vh;
+  height: 95vh;
   display: flex;
   flex-direction: column;
-}
-.scrollarea {
-  flex: 1;
-  overflow-y: hidden;
+  background-color: #f5f5f5;
+  font-family: "Songti SC", "SimSun", "STSong", "serif";
+  overflow: hidden; /* 禁止页面整体滚动，强制一屏 */
 }
 
-.userinfo {
+.scrollarea {
+  flex: 1;
+  height: 100%; /* 确保占满剩余空间 */
+}
+
+.container {
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #aaa;
-  width: 80%;
-}
-
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.usermotto {
-  margin-top: 200px;
-}
-
-.avatar-wrapper {
-  padding: 0;
-  width: 56px !important;
-  border-radius: 8px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.avatar {
-  display: block;
-  width: 56px;
-  height: 56px;
-}
-
-.nickname-wrapper {
-  display: flex;
-  width: 100%;
-  padding: 16px;
+  justify-content: center; /* 垂直居中 */
+  padding: 20rpx 40rpx; /* 减小上下内边距 */
   box-sizing: border-box;
-  border-top: .5px solid rgba(0, 0, 0, 0.1);
-  border-bottom: .5px solid rgba(0, 0, 0, 0.1);
-  color: black;
 }
 
-.nickname-label {
-  width: 105px;
+/* 头部标题样式 */
+.header {
+  text-align: center;
+  /* 灵活间距：屏幕高时大一点，屏幕矮时小一点，最小20rpx */
+  margin-bottom: clamp(60rpx, 4vh, 80rpx); 
 }
 
-.nickname-input {
-  flex: 1;
+.title {
+  font-size: 50rpx; 
+  font-weight: bold;
+  color: #ff9800; 
+  margin-bottom: 8rpx;
+}
+
+.subtitle {
+  font-size: 36rpx;
+  color: #666666;
+}
+
+/* 身份选择卡片容器 */
+.identity-cards {
+  display: flex;
+  flex-direction: column;
+ 
+  gap: 30rpx; 
+  width: 100%;
+  max-width: 550rpx;
+}
+
+/* 身份选择卡片样式 */
+.identity-card {
+  background-color: white;
+  border-radius: 30rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
+
+  padding: 25rpx; 
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.identity-card:hover {
+  transform: translateY(-5rpx);
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.12);
+}
+
+.icon-wrapper {
+  width: 90rpx; 
+  height: 90rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15rpx; 
+  
+  overflow: hidden; 
+}
+
+/* 这里的 .icon 类主要用于后续你插入 image 标签控制大小 */
+.icon {
+  width: 50rpx;
+  height: 50rpx;
+}
+
+/* --- 图标背景色 (占位颜色) --- */
+.diner-icon {
+  background-color: #fff3e0; /* 浅橙色 */
+}
+
+.merchant-icon {
+  background-color: #e0f2f1; /* 浅青色 */
+}
+
+.admin-icon {
+  background-color: #f3e5f5; /* 浅紫色 */
+}
+
+/* 身份标题样式 */
+.identity-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 6rpx;
+}
+
+/* 身份描述样式 */
+.identity-desc {
+  font-size: 25rpx;
+  color: #888888;
+  margin-bottom: 20rpx; 
+}
+
+/* 进入按钮通用样式 */
+.enter-button {
+  width: 220rpx !important; 
+  height: 80rpx !important;
+  line-height: 64rpx !important;
+  font-size: 28rpx !important; 
+  border-radius: 32rpx !important;
+  border: none !important;
+
+  /* 强制文字为白色 */
+  color: #ffffff !important; 
+  /* 强制背景为橙色渐变 */
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+
+  pointer-events: none;
 }

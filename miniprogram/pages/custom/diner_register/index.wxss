@@ -1,0 +1,213 @@
+/** 食客注册界面样式 */
+
+/** pages/custom/diner_register/index.wxss */
+
+/* 页面背景 */
+page {
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  font-family: "Songti SC", "SimSun", "STSong", "serif";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 卡片容器 */
+.register-container {
+  background-color: #ffffff;
+  width: 85%;
+  max-width: 600rpx;
+  border-radius: 48rpx;
+  padding: 50rpx 40rpx; /* 稍微减少上下的padding以容纳更多输入框 */
+  box-sizing: border-box;
+  box-shadow: 0 20rpx 50rpx rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 返回按钮 */
+.back-button {
+  position: absolute;
+  left: 30rpx;
+  top: 30rpx;
+  padding: 10rpx;
+  z-index: 10;
+}
+
+/* 头部 */
+.register-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.header-icon-wrapper {
+  margin-bottom: 20rpx;
+}
+
+.register-title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333333;
+  letter-spacing: 4rpx;
+  margin-bottom: 10rpx;
+}
+
+.register-subtitle {
+  font-size: 26rpx;
+  color: #888888;
+  letter-spacing: 2rpx;
+}
+
+/* 表单区域 */
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx; /* 稍微紧凑一点 */
+}
+
+.input-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.input-label {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #374151;
+  margin-left: 10rpx;
+}
+
+/* 输入框外壳 */
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 84rpx; /* 稍微调低一点高度 */
+  background-color: #ffffff;
+  border: 2rpx solid #d1d5db;
+  border-radius: 24rpx;
+  padding: 0 20rpx;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.input-wrapper:hover {
+  border-color: #ff9800;
+}
+
+.input-icon {
+  margin-right: 16rpx;
+}
+
+.register-input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* --- 验证码按钮特有样式 --- */
+.code-btn {
+  font-size: 24rpx;
+  color: #e65100;
+  background-color: #fff3e0;
+  padding: 10rpx 20rpx;
+  border-radius: 30rpx;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.code-btn:active {
+  opacity: 0.7;
+}
+.code-btn.disabled {
+  color: #999;
+  background-color: #f3f3f3;
+  pointer-events: none;
+}
+
+/* 注册按钮 */
+.register-button {
+  margin-top: 10rpx;
+  width: 100% !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  border-radius: 24rpx !important;
+  font-size: 32rpx !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  border: none !important;
+  box-shadow: 0 10rpx 20rpx rgba(245, 124, 0, 0.3);
+}
+.register-button:active {
+  transform: scale(0.98);
+}
+
+/* 分割线 */
+.divider-wrapper {
+  position: relative;
+  height: 40rpx;
+  margin: 10rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.divider-line {
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background-color: #e5e7eb;
+  z-index: 1;
+}
+.divider-text {
+  position: relative;
+  z-index: 2;
+  background-color: #fff;
+  padding: 0 20rpx;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+/* 微信按钮 */
+.wechat-button {
+  width: 100% !important;
+  height: 88rpx !important;
+  line-height: 88rpx !important;
+  border-radius: 24rpx !important;
+  font-size: 30rpx !important;
+  font-weight: 600 !important;
+  color: white !important;
+  background: linear-gradient(135deg, #07c160 0%, #069e50 100%) !important;
+  border: none !important;
+  box-shadow: 0 10rpx 20rpx rgba(7, 193, 96, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wechat-button:active {
+  transform: scale(0.98);
+}
+
+/* 底部链接 */
+.bottom-links {
+  margin-top: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  font-size: 26rpx;
+}
+.login-text {
+  color: #6b7280;
+}
+.login-btn-text {
+  color: #f57c00;
+  font-weight: bold;
+}

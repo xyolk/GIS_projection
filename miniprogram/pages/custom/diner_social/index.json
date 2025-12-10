@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+      "t-icon": "tdesign-miniprogram/icon/icon"
+    },
+    "navigationBarTitleText": "寻味金陵",
+    "navigationStyle": "default",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTextStyle": "black"
+}

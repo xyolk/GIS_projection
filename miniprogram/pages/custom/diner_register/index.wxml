@@ -1,0 +1,115 @@
+<view class="register-container">
+  
+  <view class="back-button" bindtap="goToLogin">
+    <t-icon name="chevron-left" size="48rpx" color="#e65100" />
+  </view>
+
+  <view class="register-header">
+    <view class="header-icon-wrapper">
+      <t-icon name="restaurant" size="80rpx" color="#ff9800" />
+    </view>
+    <view class="register-title">食客注册</view>
+    <view class="register-subtitle">加入寻味金陵，发现更多美食</view>
+  </view>
+
+  <view class="register-form">
+    
+    <view class="input-item">
+      <text class="input-label">手机号</text>
+      <view class="input-wrapper">
+        <t-icon name="mobile" size="40rpx" color="#9ca3af" class="input-icon" />
+        <input 
+          class="register-input" 
+          type="number" 
+          placeholder="请输入手机号" 
+          placeholder-class="input-placeholder"
+          maxlength="11"
+          data-field="phone"
+          bindinput="onInput"
+        />
+      </view>
+    </view>
+
+    <view class="input-item">
+      <text class="input-label">验证码</text>
+      <view class="input-wrapper">
+        <t-icon name="mail" size="40rpx" color="#9ca3af" class="input-icon" />
+        <input 
+          class="register-input" 
+          type="number" 
+          placeholder="请输入验证码" 
+          placeholder-class="input-placeholder"
+          maxlength="6"
+          data-field="code"
+          bindinput="onInput"
+        />
+        <view 
+          class="code-btn {{counting ? 'disabled' : ''}}" 
+          bindtap="onGetCode"
+        >
+          {{counting ? count + 's后重发' : '获取验证码'}}
+        </view>
+      </view>
+    </view>
+
+    <view class="input-item">
+      <text class="input-label">设置密码</text>
+      <view class="input-wrapper">
+        <t-icon name="lock-on" size="40rpx" color="#9ca3af" class="input-icon" />
+        <input 
+          class="register-input" 
+          password="{{!passwordVisible}}" 
+          placeholder="请设置6-20位密码" 
+          placeholder-class="input-placeholder"
+          data-field="password"
+          bindinput="onInput"
+        />
+        <t-icon 
+          name="{{passwordVisible ? 'browse' : 'browse-off'}}" 
+          size="40rpx" 
+          color="#9ca3af" 
+          bindtap="togglePassword"
+        />
+      </view>
+    </view>
+
+    <view class="input-item">
+      <text class="input-label">确认密码</text>
+      <view class="input-wrapper">
+        <t-icon name="lock-on" size="40rpx" color="#9ca3af" class="input-icon" />
+        <input 
+          class="register-input" 
+          password="{{!confirmPasswordVisible}}" 
+          placeholder="请再次输入密码" 
+          placeholder-class="input-placeholder"
+          data-field="confirmPassword"
+          bindinput="onInput"
+        />
+        <t-icon 
+          name="{{confirmPasswordVisible ? 'browse' : 'browse-off'}}" 
+          size="40rpx" 
+          color="#9ca3af" 
+          bindtap="toggleConfirmPassword"
+        />
+      </view>
+    </view>
+
+    <button class="register-button" bindtap="onRegister">
+      注册
+    </button>
+
+    <view class="divider-wrapper">
+      <view class="divider-line"></view>
+      <text class="divider-text">或使用其他方式注册</text>
+    </view>
+
+    <button class="wechat-button" bindtap="onWechatRegister">
+      <t-icon name="logo-wechat" size="44rpx" color="#fff" />
+      <text style="margin-left: 10rpx;">微信一键注册</text>
+    </button>
+  </view>
+  <view class="bottom-links">
+    <text class="login-text">已有账号？</text>
+    <text class="login-btn-text" bindtap="goToLogin">立即登录</text>
+  </view>
+</view>

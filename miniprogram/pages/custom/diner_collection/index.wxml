@@ -1,0 +1,134 @@
+<view class="page-container">
+  
+  <view class="custom-header">
+    <text class="header-title">收藏界面</text>
+    <view class="create-btn" bindtap="openModal">
+      <t-icon name="add" size="48rpx" color="#fff" />
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="main-content">
+    
+    <view class="section-group">
+      <view class="section-title">智能推荐系列</view>
+      <scroll-view scroll-x class="horizontal-scroll" enable-flex>
+        <block wx:for="{{recommendList}}" wx:key="id">
+          <view class="collection-card recommend-card">
+            <view class="card-img {{item.bgClass}}"></view>
+            <view class="card-body">
+              <view class="card-name">{{item.name}}</view>
+              <view class="card-desc">{{item.count}}家门店 · {{item.favs}}收藏</view>
+              <view class="card-user">
+                <view class="user-avatar-small"></view>
+                <text>{{item.user}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+
+    <view class="section-group">
+      <view class="section-title">我的收藏系列</view>
+      <scroll-view scroll-x class="horizontal-scroll" enable-flex>
+        <block wx:for="{{myCollections}}" wx:key="id">
+          <view class="collection-card my-card">
+            <view class="my-card-icon {{item.bgClass}}">
+              <t-icon name="{{item.icon}}" size="64rpx" color="{{item.iconColor}}" />
+            </view>
+            <view class="card-body center">
+              <view class="card-name truncate">{{item.name}}</view>
+              <view class="card-desc">{{item.count}}家门店</view>
+            </view>
+          </view>
+        </block>
+
+        <view class="collection-card add-card" bindtap="openModal">
+          <view class="add-icon-circle">
+            <t-icon name="add" size="48rpx" color="#9ca3af" />
+          </view>
+          <view class="add-text">新建收藏夹</view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view class="section-group mb-large">
+      <view class="section-title">关注收藏系列</view>
+      <scroll-view scroll-x class="horizontal-scroll" enable-flex>
+        <block wx:for="{{followedList}}" wx:key="id">
+          <view class="collection-card recommend-card">
+            <view class="card-img {{item.bgClass}}"></view>
+            <view class="card-body">
+              <view class="card-name">{{item.name}}</view>
+              <view class="card-desc">{{item.desc}}</view>
+              <view class="card-user">
+                <view class="user-avatar-small"></view>
+                <text>{{item.tag}}</text>
+              </view>
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+
+    <view style="height: 140rpx;"></view>
+  </scroll-view>
+
+  <view class="modal-overlay" wx:if="{{showModal}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">新建收藏夹</text>
+        <view bindtap="closeModal"><t-icon name="close" size="40rpx" color="#666" /></view>
+      </view>
+
+      <view class="form-item">
+        <text class="label">名称</text>
+        <input class="input-box" placeholder="输入收藏夹名称" model:value="{{inputName}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">简介</text>
+        <textarea class="textarea-box" placeholder="添加收藏夹简介" auto-height model:value="{{inputDesc}}" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">隐私设置</text>
+        <view class="privacy-options">
+          <view class="p-btn {{privacy==='public'?'active':''}}" bindtap="setPrivacy" data-type="public">
+            <t-icon name="internet" size="32rpx" />
+            <text>公开</text>
+          </view>
+          <view class="p-btn {{privacy==='private'?'active':''}}" bindtap="setPrivacy" data-type="private">
+            <t-icon name="lock-on" size="32rpx" />
+            <text>私密</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="modal-actions">
+        <button class="cancel-btn" bindtap="closeModal">取消</button>
+        <button class="confirm-btn" bindtap="createCollection">创建</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-item" bindtap="switchTab" data-tab="explore">
+      <t-icon name="compass" size="48rpx" />
+      <text class="tab-text">探索</text>
+    </view>
+    <view class="tab-item" bindtap="switchTab" data-tab="social">
+      <t-icon name="usergroup" size="48rpx" />
+      <text class="tab-text">社媒</text>
+    </view>
+    <view class="tab-item active" bindtap="switchTab" data-tab="collection">
+      <t-icon name="heart" size="48rpx" />
+      <text class="tab-text">收藏</text>
+    </view>
+    <view class="tab-item" bindtap="switchTab" data-tab="settings">
+      <t-icon name="setting" size="48rpx" />
+      <text class="tab-text">设置</text>
+    </view>
+  </view>
+
+</view>
