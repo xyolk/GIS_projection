@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家数据分析 - 寻味金陵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        }
+        .chart-container {
+            background-color: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        .nav-item.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white shadow-md p-4 sticky top-0 z-10">
+        <div class="flex items-center justify-between">
+            <button class="p-2">
+                <i class="material-icons text-gray-700">menu</i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">商家后台</h1>
+            <div class="flex items-center space-x-3">
+                <button class="p-2 text-gray-700">
+                    <i class="material-icons">notifications</i>
+                </button>
+                <button class="p-2 text-gray-700">
+                    <i class="material-icons">settings</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="flex-1 overflow-y-auto pb-16">
+        <!-- 店铺信息 -->
+        <div class="mt-2 p-3 bg-teal-50 rounded-xl">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="font-semibold text-gray-800">金陵小笼包</div>
+                    <div class="text-xs text-gray-500">今日营业中 | 评分 4.8</div>
+                </div>
+                <div class="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full">
+                    优质商家
+                </div>
+            </div>
+        </div>
+
+        <!-- 日期选择 -->
+        <div class="bg-white p-3 mt-2">
+            <div class="flex items-center space-x-2 overflow-x-auto pb-1">
+                <button class="px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-medium">
+                    今日
+                </button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
+                    昨日
+                </button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
+                    本周
+                </button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
+                    本月
+                </button>
+                <button class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
+                    自定义
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据指标卡片 -->
+        <div class="grid grid-cols-2 gap-3 p-3">
+            <div class="metric-card rounded-xl p-4 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-90">今日营业额</div>
+                        <div class="text-2xl font-bold mt-1">¥2,856</div>
+                        <div class="flex items-center mt-1 text-xs">
+                            <i class="material-icons text-green-300 text-sm">arrow_upward</i>
+                            <span class="ml-1">12.5% 较昨日</span>
+                        </div>
+                    </div>
+                    <i class="material-icons text-4xl opacity-70">attach_money</i>
+                </div>
+            </div>
+            
+            <div class="metric-card rounded-xl p-4 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-90">订单数量</div>
+                        <div class="text-2xl font-bold mt-1">128</div>
+                        <div class="flex items-center mt-1 text-xs">
+                            <i class="material-icons text-green-300 text-sm">arrow_upward</i>
+                            <span class="ml-1">8.3% 较昨日</span>
+                        </div>
+                    </div>
+                    <i class="material-icons text-4xl opacity-70">receipt</i>
+                </div>
+            </div>
+            
+            <div class="metric-card rounded-xl p-4 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-90">新客数量</div>
+                        <div class="text-2xl font-bold mt-1">42</div>
+                        <div class="flex items-center mt-1 text-xs">
+                            <i class="material-icons text-red-300 text-sm">arrow_downward</i>
+                            <span class="ml-1">3.2% 较昨日</span>
+                        </div>
+                    </div>
+                    <i class="material-icons text-4xl opacity-70">person_add</i>
+                </div>
+            </div>
+            
+            <div class="metric-card rounded-xl p-4 text-white">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-xs opacity-90">客单价</div>
+                        <div class="text-2xl font-bold mt-1">¥22.3</div>
+                        <div class="flex items-center mt-1 text-xs">
+                            <i class="material-icons text-green-300 text-sm">arrow_upward</i>
+                            <span class="ml-1">5.6% 较昨日</span>
+                        </div>
+                    </div>
+                    <i class="material-icons text-4xl opacity-70">trending_up</i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="p-3">
+        <!-- 订单趋势图表 -->
+        <div class="chart-container mb-3">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800">订单趋势</h3>
+                <button class="text-xs text-teal-500">查看详情</button>
+            </div>
+            <!-- 图表占位 -->
+            <div class="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                <div class="text-gray-500">图表展示区域</div>
+            </div>
+        </div>
+
+        <!-- 热销菜品 -->
+        <div class="chart-container mb-3">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800">热销菜品</h3>
+                <button class="text-xs text-teal-500">查看全部</button>
+            </div>
+            <!-- 菜品列表 -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-2 border-b border-gray-100">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center">
+                            <i class="material-icons text-gray-500">restaurant_menu</i>
+                        </div>
+                        <div>
+                            <div class="font-medium">招牌小笼包</div>
+                            <div class="text-xs text-gray-500">¥18/份</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-teal-500">32份</div>
+                        <div class="text-xs text-gray-500">25.0%</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between p-2 border-b border-gray-100">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center">
+                            <i class="material-icons text-gray-500">restaurant_menu</i>
+                        </div>
+                        <div>
+                            <div class="font-medium">鸭血粉丝汤</div>
+                            <div class="text-xs text-gray-500">¥15/份</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-teal-500">28份</div>
+                        <div class="text-xs text-gray-500">21.9%</div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between p-2">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-gray-100 rounded-md flex items-center justify-center">
+                            <i class="material-icons text-gray-500">restaurant_menu</i>
+                        </div>
+                        <div>
+                            <div class="font-medium">牛肉锅贴</div>
+                            <div class="text-xs text-gray-500">¥12/份</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-teal-500">21份</div>
+                        <div class="text-xs text-gray-500">16.4%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 客户评价 -->
+        <div class="chart-container">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800">客户评价</h3>
+                <button class="text-xs text-blue-500">查看全部</button>
+            </div>
+            <!-- 评价列表 -->
+            <div class="space-y-3">
+                <div class="p-3 border-b border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                            <div class="font-medium">美食爱好者</div>
+                        </div>
+                        <div class="flex items-center text-yellow-400">
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-700">
+                        小笼包味道非常好，汤汁鲜美，服务也很周到！
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500">
+                        2024-01-15 18:30
+                    </div>
+                </div>
+                
+                <div class="p-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                            <div class="font-medium">吃货小王</div>
+                        </div>
+                        <div class="flex items-center text-yellow-400">
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star</i>
+                            <i class="material-icons text-sm">star_border</i>
+                        </div>
+                    </div>
+                    <div class="mt-2 text-sm text-gray-700">
+                        鸭血粉丝汤的味道不错，就是等待时间有点长。
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500">
+                        2024-01-15 17:45
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+        <div class="grid grid-cols-4">
+            <button onclick="window.location.href='merchant_analytics.html'" class="nav-item active flex flex-col items-center justify-center py-2">
+                <i class="material-icons">analytics</i>
+                <span class="text-xs mt-1">数据</span>
+            </button>
+            <button onclick="window.location.href='merchant_store.html'" class="nav-item flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">restaurant</i>
+                <span class="text-xs mt-1">商品</span>
+            </button>
+            <button onclick="window.location.href='merchant_reviews.html'" class="nav-item flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">receipt</i>
+                <span class="text-xs mt-1">订单</span>
+            </button>
+            <button onclick="window.location.href='merchant_settings.html'" class="nav-item flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">settings</i>
+                <span class="text-xs mt-1">设置</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

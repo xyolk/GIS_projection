@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商家登录 - 寻味金陵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        }
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus-within {
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0f766e 0%, #0c4a44 100%);
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative">
+        <!-- 返回按钮 -->
+        <button onclick="window.location.href='../identity_selection.html'" class="absolute left-4 top-4 text-teal-700 hover:text-teal-900 transition-colors">
+            <i class="material-icons">arrow_back</i>
+        </button>
+        <!-- 头部 -->
+        <div class="text-center mb-8">
+            <div class="text-teal-500 text-8xl mb-4">
+                <i class="material-icons">storefront</i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">商家登录</h1>
+            <p class="text-gray-500 mt-2">管理您的店铺</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <form class="space-y-6">
+            <!-- 商家账户输入 -->
+            <div class="input-field">
+                <label class="block text-sm font-medium text-gray-700 mb-1">商家账户</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="material-icons">business</i>
+                    </span>
+                    <input type="text" placeholder="请输入商家账户" 
+                           class="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <!-- 密码输入 -->
+            <div class="input-field">
+                <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="material-icons">lock</i>
+                    </span>
+                    <input type="password" placeholder="请输入密码" 
+                           class="w-full pl-12 pr-12 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent">
+                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer">
+                        <i class="material-icons">visibility</i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 登录按钮 -->
+            <button type="submit" 
+                    class="btn-primary w-full text-white py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                登录
+            </button>
+        </form>
+
+        <!-- 底部链接 -->
+        <div class="text-center mt-8">
+            <div class="flex justify-between text-sm">
+                <a href="#" class="text-gray-500 hover:text-teal-500">商家账户申请</a>
+                <a href="#" class="text-gray-500 hover:text-teal-500">找回密码</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

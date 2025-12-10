@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容审核 - 管理员控制台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-good {
+            background-color: #4caf50;
+        }
+        .status-warning {
+            background-color: #ff9800;
+        }
+        .status-bad {
+            background-color: #f44336;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            color: #9c27b0;
+            border-bottom: 2px solid #9c27b0;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white shadow-sm p-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="material-icons text-purple-600 text-2xl">admin_panel_settings</i>
+            <h1 class="text-2xl font-bold text-gray-800">管理员控制台</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <i class="material-icons text-gray-500">notifications</i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center">
+                    <i class="material-icons text-purple-600">person</i>
+                </div>
+                <span class="font-medium">管理员</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要内容区（包含所有可滚动内容） -->
+    <div class="flex-1 overflow-y-auto pb-20">
+        <!-- 系统状态概览 -->
+        <div class="p-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">待审核评论</p>
+                        <p class="text-2xl font-bold text-purple-600">8</p>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">comment</i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">已审核</p>
+                        <p class="text-base font-semibold">256</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">已拒绝</p>
+                        <p class="text-base font-semibold">12</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">待审核餐厅信息</p>
+                        <p class="text-2xl font-bold text-purple-600">7</p>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">restaurant</i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">已通过</p>
+                        <p class="text-base font-semibold">89</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">已驳回</p>
+                        <p class="text-base font-semibold">3</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">敏感词检测</p>
+                        <p class="text-2xl font-bold text-purple-600">15</p>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">warning</i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">今日检测</p>
+                        <p class="text-base font-semibold">1,234</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">自动过滤</p>
+                        <p class="text-base font-semibold">23</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要功能区 -->
+        <div class="p-3">
+        <!-- 功能标签页 -->
+        <div class="bg-white rounded-xl shadow p-4 mb-4">
+            <div class="flex space-x-6 border-b pb-2">
+                <button class="tab-button active py-2 px-3 font-medium">内容审核</button>
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">数据维护</button>
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">系统监控</button>
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">规则配置</button>
+            </div>
+            
+            <!-- 内容审核页面 -->
+            <div class="mt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">待审核内容</h2>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-base">
+                            <option>全部</option>
+                            <option>评论</option>
+                            <option>餐厅信息</option>
+                            <option>图片</option>
+                        </select>
+                        <button class="bg-purple-600 text-white px-3 py-2 rounded-lg text-base flex items-center">
+                            <i class="material-icons text-sm mr-1">search</i>搜索
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 审核列表 -->
+                <div class="space-y-3">
+                    <!-- 评论审核项 -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">用户ID: U12345</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">待审核</span>
+                            </div>
+                            <p class="text-base text-gray-700 mb-2">这家餐厅的菜品非常好吃，特别是招牌菜，值得推荐！</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>餐厅: 金陵酒家</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 14:30</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                            <button class="bg-green-100 text-green-800 px-3 py-1.5 rounded text-sm hover:bg-green-200">
+                                <i class="material-icons text-sm">check</i>
+                            </button>
+                            <button class="bg-red-100 text-red-800 px-3 py-1.5 rounded text-sm hover:bg-red-200">
+                                <i class="material-icons text-sm">close</i>
+                            </button>
+                            <button class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-sm hover:bg-blue-200">
+                                <i class="material-icons text-sm">edit</i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 餐厅信息审核项 -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">餐厅ID: R67890</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">待审核</span>
+                            </div>
+                            <p class="text-base font-medium text-purple-600 mb-1">新菜上架：金陵烤鸭</p>
+                            <p class="text-base text-gray-700 mb-2">新增特色菜品，传统工艺制作，外酥里嫩，售价88元/份。</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>商家: 金陵酒家</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 13:15</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                            <button class="bg-green-100 text-green-800 px-3 py-1.5 rounded text-sm hover:bg-green-200">
+                                <i class="material-icons text-sm">check</i>
+                            </button>
+                            <button class="bg-red-100 text-red-800 px-3 py-1.5 rounded text-sm hover:bg-red-200">
+                                <i class="material-icons text-sm">close</i>
+                            </button>
+                            <button class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-sm hover:bg-blue-200">
+                                <i class="material-icons text-sm">visibility</i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 图片审核项 -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">图片ID: IMG98765</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">待审核</span>
+                            </div>
+                            <div class="flex items-center space-x-2 mb-2">
+                                <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center">
+                                    <i class="material-icons text-gray-500">image</i>
+                                </div>
+                                <p class="text-base text-gray-700">餐厅环境图片</p>
+                            </div>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>餐厅: 江南小馆</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 12:45</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                            <button class="bg-green-100 text-green-800 px-3 py-1.5 rounded text-sm hover:bg-green-200">
+                                <i class="material-icons text-sm">check</i>
+                            </button>
+                            <button class="bg-red-100 text-red-800 px-3 py-1.5 rounded text-sm hover:bg-red-200">
+                                <i class="material-icons text-sm">close</i>
+                            </button>
+                            <button class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-sm hover:bg-blue-200">
+                                <i class="material-icons text-sm">visibility</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <button class="text-purple-600 hover:text-purple-800 text-base">查看更多</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 敏感词管理 -->
+        <div class="bg-white rounded-xl shadow p-4 mb-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-semibold">敏感词管理</h3>
+                <button class="bg-purple-600 text-white px-3 py-2 rounded-lg text-base flex items-center">
+                    <i class="material-icons text-sm mr-1">add</i>添加敏感词
+                </button>
+            </div>
+            
+            <div class="flex space-x-2 mb-3">
+                <span class="bg-red-100 text-red-800 text-sm px-3 py-1.5 rounded-full">广告</span>
+                <span class="bg-red-100 text-red-800 text-sm px-3 py-1.5 rounded-full">诈骗</span>
+                <span class="bg-red-100 text-red-800 text-sm px-3 py-1.5 rounded-full">暴力</span>
+                <span class="bg-red-100 text-red-800 text-sm px-3 py-1.5 rounded-full">色情</span>
+                <span class="bg-red-100 text-red-800 text-sm px-3 py-1.5 rounded-full">赌博</span>
+                <span class="bg-gray-100 text-gray-800 text-sm px-3 py-1.5 rounded-full flex items-center">
+                    更多 <i class="material-icons text-sm ml-1">chevron_right</i>
+                </span>
+            </div>
+            
+            <div class="border border-gray-200 rounded-lg p-3">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-base font-medium">今日敏感词检测统计</p>
+                    <span class="text-sm text-gray-500">2024-01-15</span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 text-base">
+                    <div>
+                        <p class="text-gray-500">检测到敏感词</p>
+                        <p class="font-semibold text-purple-600">123次</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">自动过滤</p>
+                        <p class="font-semibold text-green-600">89次</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">人工审核</p>
+                        <p class="font-semibold text-yellow-600">34次</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500">误判率</p>
+                        <p class="font-semibold text-red-600">2.5%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white shadow-inner p-3 flex justify-around border-t z-10">
+        <button onclick="window.location.href='super_dashboard.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">dashboard</i>
+            <span class="text-xs mt-1">仪表盘</span>
+        </button>
+        <button onclick="window.location.href='super_content_review.html'" class="flex flex-col items-center text-purple-600">
+            <i class="material-icons">assignment</i>
+            <span class="text-xs mt-1">内容审核</span>
+        </button>
+        <button onclick="window.location.href='super_data_maintenance.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">storage</i>
+            <span class="text-xs mt-1">数据维护</span>
+        </button>
+        <button onclick="window.location.href='super_system_settings.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">settings</i>
+            <span class="text-xs mt-1">系统设置</span>
+        </button>
+    </div>
+</body>
+</html>

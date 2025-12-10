@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据维护 - 管理员控制台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-good {
+            background-color: #4caf50;
+        }
+        .status-warning {
+            background-color: #ff9800;
+        }
+        .status-bad {
+            background-color: #f44336;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: rgba(156, 39, 176, 0.1);
+            color: #9c27b0;
+            border-bottom: 2px solid #9c27b0;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white shadow-sm p-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="material-icons text-purple-600 text-2xl">admin_panel_settings</i>
+            <h1 class="text-2xl font-bold text-gray-800">管理员控制台</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <i class="material-icons text-gray-500">notifications</i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 rounded-full bg-purple-200 flex items-center justify-center">
+                    <i class="material-icons text-purple-600">person</i>
+                </div>
+                <span class="font-medium">管理员</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要功能区 -->
+    <div class="flex-1 overflow-y-auto pb-20">
+        <!-- 系统状态概览 -->
+        <div class="p-3 grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">待处理POI变动</p>
+                        <p class="text-2xl font-bold text-purple-600">12</p>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">location_on</i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">新增</p>
+                        <p class="text-base font-semibold">5</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">变更</p>
+                        <p class="text-base font-semibold">7</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">餐厅数据总数</p>
+                        <p class="text-2xl font-bold text-purple-600">1,234</p>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">restaurant</i>
+                </div>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">活跃</p>
+                        <p class="text-base font-semibold">1,189</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">停业</p>
+                        <p class="text-base font-semibold">45</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card bg-white rounded-xl shadow p-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <p class="text-base text-gray-500">缓存状态</p>
+                        <div class="flex items-center mt-1">
+                            <span class="status-indicator status-good"></span>
+                            <span class="font-semibold text-green-600">正常</span>
+                        </div>
+                    </div>
+                    <i class="material-icons text-purple-600 text-3xl">memory</i>
+                </div>
+                <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                    <div>
+                        <p class="text-sm text-gray-500">使用率</p>
+                        <p class="text-base font-semibold">78%</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">缓存条目</p>
+                        <p class="text-base font-semibold">5,678</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">刷新频率</p>
+                        <p class="text-base font-semibold">30分钟</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
+        <!-- 功能标签页 -->
+        <div class="bg-white rounded-xl shadow p-4 mb-4">
+            <div class="flex space-x-6 border-b pb-2">
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">内容审核</button>
+                <button class="tab-button active py-2 px-3 font-medium">数据维护</button>
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">系统监控</button>
+                <button class="tab-button py-2 px-3 font-medium text-gray-500 hover:text-purple-600">规则配置</button>
+            </div>
+            
+            <!-- 数据维护页面 -->
+            <div class="mt-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">POI变动处理</h2>
+                    <div class="flex space-x-2">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-base">
+                            <option>全部</option>
+                            <option>新增</option>
+                            <option>停业</option>
+                            <option>迁址</option>
+                            <option>坐标偏移</option>
+                        </select>
+                        <button class="bg-purple-600 text-white px-3 py-2 rounded-lg text-base flex items-center">
+                            <i class="material-icons text-sm mr-1">search</i>搜索
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- POI变动列表 -->
+                <div class="space-y-3">
+                    <!-- 新增POI -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">餐厅ID: R98765</span>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded">新增</span>
+                            </div>
+                            <p class="text-base font-semibold text-purple-600 mb-1">新餐厅：秦淮人家</p>
+                            <p class="text-base text-gray-700 mb-2">地址：南京市秦淮区夫子庙景区内，提供传统南京美食。</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>坐标：32.0454°N, 118.7969°E</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 16:20</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                            <button class="bg-green-100 text-green-800 px-3 py-1.5 rounded text-sm hover:bg-green-200">
+                                <i class="material-icons text-sm">check</i>
+                            </button>
+                            <button class="bg-red-100 text-red-800 px-3 py-1.5 rounded text-sm hover:bg-red-200">
+                                <i class="material-icons text-sm">close</i>
+                            </button>
+                            <button class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-sm hover:bg-blue-200">
+                                <i class="material-icons text-sm">edit</i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 迁址POI -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">餐厅ID: R12345</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">迁址</span>
+                            </div>
+                            <p class="text-base font-semibold text-purple-600 mb-1">金陵酒家（地址变更）</p>
+                            <p class="text-base text-gray-700 mb-2">原地址：南京市玄武区中山路1号 → 新地址：南京市玄武区中山路10号</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>新坐标：32.0603°N, 118.7969°E</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 15:45</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                        <button class="bg-green-100 text-green-800 px-3 py-1.5 rounded text-sm hover:bg-green-200">
+                            <i class="material-icons text-sm">check</i>
+                        </button>
+                        <button class="bg-red-100 text-red-800 px-3 py-1.5 rounded text-sm hover:bg-red-200">
+                            <i class="material-icons text-sm">close</i>
+                        </button>
+                        <button class="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-sm hover:bg-blue-200">
+                            <i class="material-icons text-sm">edit</i>
+                        </button>
+                    </div>
+                    </div>
+                    
+                    <!-- 停业POI -->
+                    <div class="border border-gray-200 rounded-lg p-3 flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-base font-medium">餐厅ID: R54321</span>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded">停业</span>
+                            </div>
+                            <p class="text-base font-semibold text-purple-600 mb-1">江南小馆（停业）</p>
+                            <p class="text-base text-gray-700 mb-2">经核实，该餐厅已停止营业，需要从系统中移除。</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <span>地址：南京市鼓楼区湖南路123号</span>
+                                <span class="mx-2">•</span>
+                                <span>2024-01-15 14:30</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2 ml-3">
+                            <button class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs hover:bg-green-200">
+                                <i class="material-icons text-xs">check</i>
+                            </button>
+                            <button class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs hover:bg-red-200">
+                                <i class="material-icons text-xs">close</i>
+                            </button>
+                            <button class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs hover:bg-blue-200">
+                                <i class="material-icons text-xs">edit</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3 text-center">
+                    <button class="text-purple-600 hover:text-purple-800 text-base">查看更多</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 缓存管理 -->
+        <div class="bg-white rounded-xl shadow p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="text-xl font-semibold">缓存管理</h3>
+                <div class="flex space-x-2">
+                    <button class="bg-purple-600 text-white px-3 py-2 rounded-lg text-base flex items-center">
+                        <i class="material-icons text-sm mr-1">refresh</i>手动刷新
+                    </button>
+                    <button class="bg-gray-200 text-gray-800 px-3 py-2 rounded-lg text-base flex items-center">
+                        <i class="material-icons text-sm mr-1">settings</i>设置
+                    </button>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="border border-gray-200 rounded-lg p-3">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-base font-medium">缓存状态</p>
+                        <span class="status-indicator status-good"></span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                        <div class="bg-purple-600 h-2.5 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-sm text-gray-500">
+                        <span>已用：4.2GB / 5.4GB</span>
+                        <span>条目数：5,678</span>
+                        <span>最后刷新：10分钟前</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <button class="border border-purple-200 rounded-lg p-3 flex flex-col items-center hover:bg-purple-50 transition">
+                        <i class="material-icons text-purple-600 mb-1">refresh</i>
+                        <span class="text-base">刷新餐厅数据</span>
+                    </button>
+                    <button class="border border-purple-200 rounded-lg p-3 flex flex-col items-center hover:bg-purple-50 transition">
+                        <i class="material-icons text-purple-600 mb-1">refresh</i>
+                        <span class="text-base">刷新评价数据</span>
+                    </button>
+                    <button class="border border-purple-200 rounded-lg p-3 flex flex-col items-center hover:bg-purple-50 transition">
+                        <i class="material-icons text-purple-600 mb-1">refresh</i>
+                        <span class="text-base">刷新用户数据</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white shadow-inner p-3 flex justify-around border-t z-10">
+        <button onclick="window.location.href='super_dashboard.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">dashboard</i>
+            <span class="text-xs mt-1">仪表盘</span>
+        </button>
+        <button onclick="window.location.href='super_content_review.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">assignment</i>
+            <span class="text-xs mt-1">内容审核</span>
+        </button>
+        <button onclick="window.location.href='super_data_maintenance.html'" class="flex flex-col items-center text-purple-600">
+            <i class="material-icons">storage</i>
+            <span class="text-xs mt-1">数据维护</span>
+        </button>
+        <button onclick="window.location.href='super_system_settings.html'" class="flex flex-col items-center text-gray-500">
+            <i class="material-icons">settings</i>
+            <span class="text-xs mt-1">系统设置</span>
+        </button>
+    </div>
+</body>
+</html>

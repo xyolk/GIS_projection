@@ -1,5 +1,7 @@
 **“寻味金陵”小程序-需求文档**
 
+**文档说明：** 本文档基于《寻味金陵小程序需求文档》。旨在帮你快速理解需求，了解小程序的大概功能和界面，但不强制到具体设计细节，具体UI细节应参照同文件夹下的UI.md来进行设计；具体数据流逻辑应参照同文件夹下的dataset.md来进行设计；而具体数据库应该在云开发环境建立列表以实现动态交互。
+
 **1. 这个小程序是干嘛的？**
 * 这是一个服务于“食客、商家、管理员”三方角色的美食生态系统
 * **食客**：发现身边美食，一键导航直达，分享真实评价
@@ -26,6 +28,10 @@
 * **社交与榜单**
     * 每日更新“热门榜”“小众榜”“话题榜”
     * 支持一键分享至微信/微博，支持收藏餐厅（反向影响推荐权重）
+
+* **交互说明**
+    * 四个界面彼此应该可以灵活交互，如点击探索界面的红心可以弹出添加到我的收藏夹、
+    在收藏夹详情界面关注用户可动态改变我的社媒界面的关注人数，点击关注人数也可访问关注者的收藏系列等。
 
 * **商家端（核心流程：管理—复盘—维护）**
 * **店铺信息管理（门面）**
@@ -55,7 +61,7 @@
 
 **3. 界面和使用感觉要求**
 * **界面样子**
-* 必须使用“TDesign Weixin”界面工具包，保持三端风格统一、专业、高效
+* 必须使用“TDesign”界面工具包，保持三端风格统一、专业、高效
 * 决策环节强调信息层级：遵循“先核心后细节”原则
 * **使用感觉**
 * 路径极简：不堆砌按钮，不强制跳转，流程闭环短
@@ -79,6 +85,7 @@
 
 **5.1 地图与导航服务实现**
 鉴于小程序环境，优先接入 **腾讯位置服务 (Tencent LBS) WebService API**。
+应给出.env文件专门用于接入API接口
 
 * **路线规划（驾车/步行/公交）**
     * **接口选型**：腾讯地图 **Direction API**（路线规划接口）
@@ -125,3 +132,59 @@
 * **数据结构准备**
     * **用户画像表**：存储 `User_ID`, `Pref_Tags` (口味), `Avoid_Tags` (忌口), `History_Vector` (历史交互权重)。
     * **餐厅特征表**：存储 `Shop_ID`, `Tags` (标签), `Price` (价格), `Location` (经纬度)。
+
+【运行环境】
+- 微信小程序云开发，云开发环境 ID：gisenv-6gzyxup1aa1bbc9d
+- 使用 TDesign 组件库 "tdesign-miniprogram": "^1.11.2"，已在 package.json 中声明
+- 腾讯位置服务 key 使用占位符 {{__TENCENT_MAP_KEY__}}，不要硬编码
+
+【数据库集合】（先创建，权限 read:true / write:owner）
+1. users
+   _id, _openid, nickName, avatarUrl, prefTags[string], avoidTags[string], location GeoPoint, updateTime Date
+2. shops
+   _id, name, coverPic, location GeoPoint, address, phone, openHours[string], tags[string], price Number, score Number, ownerOpenid
+3. reviews
+   _id, _openid, shopId, stars Number, tags[string], pics array<string>, createTime Date
+
+// user_fav_shops
+{
+  _id: string,          // 云开发自动
+  _openid: string,      // 收藏者
+  shopId: string,       // 店铺 _id
+  createTime: Date,     // 收藏时间
+}
+
+// user_follow_users
+{
+  _id: string,
+  _openid: string,      // 粉丝
+  targetOpenid: string, // 被关注人
+  createTime: Date,
+}
+
+【页面拆分】
+- 食客端 4 个 Tab：首页 discovery / 榜单 ranking / 收藏 favorites / 我的 profile
+- 每个 Tab 都是独立 Page，放在 pages/discovery/index 等路径
+- 仅 discovery 需要下拉刷新 + 上拉加载更多
+
+【discovery 页面需求】
+1. onLoad 获取用户当前坐标，写入 users.location（没有就新建）
+2. 按「推荐算法」拉取附近 20 条 shops，写进 this.setData({shopList})，用 t-card 渲染
+3. 推荐算法：云函数 getNearbyShops，内部按 5.2 公式 Score = Wbase*Smatch + Wctx*Scontext + Wact*Sbehavior 排序，返回 shopList
+4. 下滑到底部触发上拉，skip+20 继续拉取
+5. 点击 shop 跳转到 pages/shopDetail/index?shopId=xxx
+6. 点击卡片心形图标：如果已收藏则删除 users.prefTags["favorite_shopId"], 否则添加；成功后只改数据，不手动改 DOM，依赖 setData 自动刷新
+
+【代码风格】
+-  async/await + wx.cloud.database()
+-  每个查询加 .limit(20).orderBy('updateTime','desc')
+-  禁止出现 document、window 等 Web API
+-  所有图片用 <t-image lazy /> 并给默认占位图
+-  wxml 里只出现 {{}} 绑定，禁止出现 wx:if 嵌套超 2 层，复杂判断在 JS 里先算好布尔值
+
+【输出物】
+1. app.js 中云开发初始化代码
+2. cloudfunctions/getNearbyShops/index.js 完整实现（含 Score 排序逻辑）
+3. pages/discovery/index.{js,wxml,wxss} 三件套，满足上述需求
+4. 一键部署清单：告诉我先在云开发控制台创建哪几个集合、哪几条索引（location 2dsphere）
+5. 命名风格统一、简约，复用性为第一准则，强调动态交互，灵活使用云数据库

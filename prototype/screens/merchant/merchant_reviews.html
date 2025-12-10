@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>评价中心 - 寻味金陵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .review-stats {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        }
+        .star-rating {
+            color: #FFC107;
+        }
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        .nav-item.active {
+            color: #0d9488;
+            border-bottom: 2px solid #0d9488;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white shadow-md p-4 sticky top-0 z-10">
+        <div class="flex items-center justify-between">
+            <button class="p-2">
+                <i class="material-icons text-gray-700">menu</i>
+            </button>
+            <h1 class="text-xl font-bold text-gray-800">评价中心</h1>
+            <div class="flex items-center space-x-3">
+                <button class="p-2 text-gray-700">
+                    <i class="material-icons">notifications</i>
+                </button>
+                <button class="p-2 text-gray-700">
+                    <i class="material-icons">settings</i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="flex-1 overflow-y-auto pb-16">
+        <!-- 评价统计 -->
+        <div class="review-stats p-4">
+            <div class="flex items-center justify-around">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">4.8</div>
+                    <div class="text-sm text-white opacity-90">综合评分</div>
+                    <div class="flex items-center justify-center mt-1 star-rating">
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                        <i class="material-icons">star</i>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-white">1,234</div>
+                    <div class="text-sm text-white opacity-90">评价总数</div>
+                    <div class="text-xs text-white opacity-80 mt-1">本月新增 89</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 评分分布 -->
+        <div class="bg-white p-4">
+            <div class="mb-3">
+                <h3 class="font-semibold text-gray-800 mb-2">评分分布</h3>
+                <!-- 5星 -->
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="material-icons text-yellow-400 text-sm">star</i>
+                        <span class="text-sm ml-1">5星</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-40 bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">85%</span>
+                    </div>
+                </div>
+                <!-- 4星 -->
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="material-icons text-yellow-400 text-sm">star</i>
+                        <span class="text-sm ml-1">4星</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-40 bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 10%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">10%</span>
+                    </div>
+                </div>
+                <!-- 3星 -->
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="material-icons text-yellow-400 text-sm">star</i>
+                        <span class="text-sm ml-1">3星</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-40 bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 3%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">3%</span>
+                    </div>
+                </div>
+                <!-- 2星 -->
+                <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                        <i class="material-icons text-yellow-400 text-sm">star</i>
+                        <span class="text-sm ml-1">2星</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-40 bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 1%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">1%</span>
+                    </div>
+                </div>
+                <!-- 1星 -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <i class="material-icons text-yellow-400 text-sm">star</i>
+                        <span class="text-sm ml-1">1星</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-40 bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-400 h-3 rounded-full" style="width: 1%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">1%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 评价筛选 -->
+        <div class="bg-white border-b border-gray-200">
+            <div class="flex overflow-x-auto">
+                <button class="nav-item active flex-1 py-3 text-center font-medium whitespace-nowrap">
+                    全部评价
+                </button>
+                <button class="nav-item text-gray-500 flex-1 py-3 text-center font-medium whitespace-nowrap">
+                    5星评价
+                </button>
+                <button class="nav-item text-gray-500 flex-1 py-3 text-center font-medium whitespace-nowrap">
+                    4星评价
+                </button>
+                <button class="nav-item text-gray-500 flex-1 py-3 text-center font-medium whitespace-nowrap">
+                    3星及以下
+                </button>
+                <button class="nav-item text-gray-500 flex-1 py-3 text-center font-medium whitespace-nowrap">
+                    待回复
+                </button>
+            </div>
+        </div>
+
+        <!-- 评价列表 -->
+        <div class="space-y-4 p-3">
+            <!-- 评价项 -->
+            <div class="bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                        <div>
+                            <div class="font-medium">美食爱好者</div>
+                            <div class="flex items-center star-rating">
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">2024-01-15 18:30</div>
+                </div>
+                <div class="mt-2 text-sm text-gray-700">
+                    小笼包味道非常好，汤汁鲜美，服务也很周到！下次还会再来的。
+                </div>
+                <!-- 商家回复 -->
+                <div class="mt-3 p-2 bg-teal-50 rounded-lg">
+                    <div class="flex items-start space-x-2">
+                        <i class="material-icons text-teal-500 text-sm mt-0.5">business</i>
+                        <div>
+                            <div class="text-xs font-semibold text-teal-600">金陵小笼包</div>
+                            <div class="text-xs text-gray-700 mt-0.5">
+                                感谢您的好评！我们会继续努力为您提供更好的美食和服务！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价项 -->
+            <div class="bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                        <div>
+                            <div class="font-medium">吃货小王</div>
+                            <div class="flex items-center star-rating">
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star_border</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">2024-01-15 17:45</div>
+                </div>
+                <div class="mt-2 text-sm text-gray-700">
+                    鸭血粉丝汤的味道不错，就是等待时间有点长，希望可以改进一下。
+                </div>
+                <!-- 商家回复 -->
+                <div class="mt-3 p-2 bg-blue-50 rounded-lg">
+                    <div class="flex items-start space-x-2">
+                        <i class="material-icons text-blue-500 text-sm mt-0.5">business</i>
+                        <div>
+                            <div class="text-xs font-semibold text-blue-600">金陵小笼包</div>
+                            <div class="text-xs text-gray-700 mt-0.5">
+                                感谢您的反馈！我们会优化出餐流程，减少等待时间，期待您的再次光临！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 评价项 -->
+            <div class="bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                        <div>
+                            <div class="font-medium">美食探索家</div>
+                            <div class="flex items-center star-rating">
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star_border</i>
+                                <i class="material-icons text-sm">star_border</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">2024-01-14 20:15</div>
+                </div>
+                <div class="mt-2 text-sm text-gray-700">
+                    牛肉锅贴的味道一般，皮有点厚，希望可以调整一下火候。
+                </div>
+                <!-- 待回复 -->
+                <div class="mt-3">
+                    <button class="w-full text-sm text-teal-500 font-medium py-2 border border-teal-200 rounded-lg">
+                        <i class="material-icons text-sm">reply</i> 回复评价
+                    </button>
+                </div>
+            </div>
+
+            <!-- 评价项 -->
+            <div class="bg-white rounded-xl shadow-sm p-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-gray-100 rounded-full"></div>
+                        <div>
+                            <div class="font-medium">甜品控</div>
+                            <div class="flex items-center star-rating">
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                                <i class="material-icons text-sm">star</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500">2024-01-14 15:40</div>
+                </div>
+                <div class="mt-2 text-sm text-gray-700">
+                    酒酿小圆子非常好吃，甜度适中，很适合作为餐后甜点！
+                </div>
+                <!-- 商家回复 -->
+                <div class="mt-3 p-2 bg-blue-50 rounded-lg">
+                    <div class="flex items-start space-x-2">
+                        <i class="material-icons text-blue-500 text-sm mt-0.5">business</i>
+                        <div>
+                            <div class="text-xs font-semibold text-blue-600">金陵小笼包</div>
+                            <div class="text-xs text-gray-700 mt-0.5">
+                                谢谢您的喜爱！我们的酒酿小圆子都是每天现做的，期待您的再次品尝！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+        <div class="grid grid-cols-4">
+            <button onclick="window.location.href='merchant_analytics.html'" class="nav-item text-gray-500 flex flex-col items-center justify-center py-2">
+                <i class="material-icons">analytics</i>
+                <span class="text-xs mt-1">数据</span>
+            </button>
+            <button onclick="window.location.href='merchant_store.html'" class="nav-item text-gray-500 flex flex-col items-center justify-center py-2">
+                <i class="material-icons">restaurant</i>
+                <span class="text-xs mt-1">商品</span>
+            </button>
+            <button onclick="window.location.href='merchant_reviews.html'" class="nav-item active flex flex-col items-center justify-center py-2">
+                <i class="material-icons">receipt</i>
+                <span class="text-xs mt-1">订单</span>
+            </button>
+            <button onclick="window.location.href='merchant_settings.html'" class="nav-item text-gray-500 flex flex-col items-center justify-center py-2">
+                <i class="material-icons">settings</i>
+                <span class="text-xs mt-1">设置</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

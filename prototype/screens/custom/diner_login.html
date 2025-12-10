@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食客登录 - 寻味金陵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+        .input-field {
+            transition: all 0.3s ease;
+        }
+        .input-field:focus-within {
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
+        }
+        .btn-wechat {
+            background: linear-gradient(135deg, #07c160 0%, #069e50 100%);
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full relative">
+        <!-- 返回按钮 -->
+        <button onclick="window.location.href='../identity_selection.html'" class="absolute left-4 top-4 text-orange-700 hover:text-orange-900 transition-colors">
+            <i class="material-icons">arrow_back</i>
+        </button>
+        <!-- 头部 -->
+        <div class="text-center mb-8">
+            <div class="text-orange-500 text-8xl mb-4">
+                <i class="material-icons">restaurant_menu</i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">食客登录</h1>
+            <p class="text-gray-500 mt-2">欢迎回到寻味金陵</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <form class="space-y-6">
+            <!-- 手机号输入 -->
+            <div class="input-field">
+                <label class="block text-sm font-medium text-gray-700 mb-1">手机号</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="material-icons">phone</i>
+                    </span>
+                    <input type="tel" placeholder="请输入手机号" 
+                           class="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <!-- 密码输入 -->
+            <div class="input-field">
+                <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <i class="material-icons">lock</i>
+                    </span>
+                    <input type="password" placeholder="请输入密码" 
+                           class="w-full pl-12 pr-12 py-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer">
+                        <i class="material-icons">visibility</i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- 登录按钮 -->
+            <button type="submit" 
+                    class="btn-primary w-full text-white py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-shadow">
+                登录
+            </button>
+
+            <!-- 分割线 -->
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">或使用其他方式登录</span>
+                </div>
+            </div>
+
+            <!-- 微信登录 -->
+            <button type="button" 
+                    class="btn-wechat w-full text-white py-3 rounded-2xl font-semibold shadow-lg flex items-center justify-center space-x-3">
+                <i class="material-icons">wechat</i>
+                <span>微信一键登录</span>
+            </button>
+        </form>
+
+        <!-- 底部链接 -->
+        <div class="text-center mt-8 space-y-2">
+            <a href="#" class="text-sm text-gray-500 hover:text-orange-500">忘记密码？</a>
+            <p class="text-sm text-gray-500">还没有账号？ <a href="diner_register.html" class="text-orange-500 font-medium">立即注册</a></p>
+        </div>
+    </div>
+</body>
+</html>

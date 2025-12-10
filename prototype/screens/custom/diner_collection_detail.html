@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收藏系列详情 - 寻味金陵</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        .collection-card {
+            transition: all 0.3s ease;
+        }
+        .collection-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .store-card {
+            transition: all 0.3s ease;
+        }
+        .store-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        /* Modal Styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .collection-option.active {
+            border-color: #ff9800;
+            background-color: #fff3e0;
+        }
+        .favorite-btn.active {
+            color: #f44336;
+        }
+        /* 成功提示动画 */
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(-10px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+        .success-toast {
+            animation: fadeInOut 2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+    <!-- 顶部导航栏 -->
+    <div class="bg-white shadow-md p-4 sticky top-0 z-10">
+        <div class="flex items-center">
+            <button onclick="window.location.href='diner_collections.html'" class="text-gray-700 p-2 mr-3">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-xl font-bold text-gray-800">南京必吃榜</h1>
+                <p class="text-xs text-gray-500">12家门店 · 2.3k收藏</p>
+            </div>
+            <button id="followCollectionBtn" class="text-gray-700 p-2">
+                <i class="material-icons">bookmark_border</i>
+            </button>
+        </div>
+    </div>
+
+    <!-- 加入收藏夹模态窗口 -->
+    <div id="addToCollectionModal" class="fixed inset-0 modal-overlay flex items-center justify-center z-50 hidden">
+        <div class="modal-content bg-white rounded-2xl shadow-xl w-full max-w-sm p-5">
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-xl font-bold text-gray-800">加入收藏夹</h2>
+                <button id="closeAddToCollectionModalBtn" class="text-gray-500 hover:text-gray-700">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            
+            <div class="mb-5">
+                <p class="text-sm text-gray-600 mb-3">选择要添加到的收藏夹：</p>
+                <div class="space-y-3">
+                    <!-- 收藏夹选项 -->
+                    <div class="collection-option active flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="material-icons text-purple-500 text-sm">restaurant</i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800 text-sm">我的最爱</div>
+                            <div class="text-xs text-gray-500">6家门店</div>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border-2 border-orange-500 flex items-center justify-center">
+                            <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="collection-option flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="material-icons text-blue-500 text-sm">cake</i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800 text-sm">甜品合集</div>
+                            <div class="text-xs text-gray-500">8家门店</div>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>
+                    </div>
+                    
+                    <div class="collection-option flex items-center p-3 border border-gray-200 rounded-xl cursor-pointer">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="material-icons text-green-500 text-sm">local_cafe</i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800 text-sm">咖啡馆</div>
+                            <div class="text-xs text-gray-500">12家门店</div>
+                        </div>
+                        <div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="flex space-x-3">
+                <button id="cancelAddToCollectionBtn" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                    取消
+                </button>
+                <button id="confirmAddToCollectionBtn" class="flex-1 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                    确认添加
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 成功提示 -->
+    <div id="successToast" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 hidden">
+        <div class="flex items-center">
+            <i class="material-icons mr-2">check</i>
+            <span>添加成功！</span>
+        </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="flex-1 overflow-y-auto pb-16">
+        <!-- 收藏夹信息 -->
+        <div class="p-4 bg-white">
+            <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                    <i class="material-icons text-orange-500">star</i>
+                </div>
+                <div>
+                    <div class="font-medium text-gray-700">美食达人</div>
+                    <div class="text-xs text-gray-500">2023-10-15 创建</div>
+                </div>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">南京必吃美食推荐，包含各种特色餐厅和小吃店，让你一次尝遍金陵美味。</p>
+            <div class="flex space-x-3">
+                <button class="bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-sm flex items-center">
+                    <i class="material-icons text-sm mr-1">share</i>
+                    分享
+                </button>
+                <button class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm flex items-center">
+                    <i class="material-icons text-sm mr-1">people</i>
+                    关注
+                </button>
+            </div>
+        </div>
+
+        <!-- 收藏的店铺列表 -->
+        <div class="bg-white mt-2">
+            <div class="p-4 border-b border-gray-100">
+                <h2 class="text-lg font-bold text-gray-800">收藏的店铺 (12)</h2>
+            </div>
+            
+            <!-- 店铺列表 -->
+            <div class="divide-y divide-gray-100">
+                <!-- 店铺1 -->
+                <div class="store-card p-4 flex items-center">
+                    <div class="w-20 h-20 bg-orange-100 rounded-xl mr-4 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-gray-800">老门东盐水鸭</h3>
+                            <div class="bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-full">特色</div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">老门东历史文化街区</div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="material-icons text-xs">star</i>
+                                <span class="text-sm ml-1">4.8</span>
+                            </div>
+                            <div class="text-xs text-gray-500 ml-3">¥58/人</div>
+                            <div class="text-xs text-gray-500 ml-3">熟食</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-gray-400 hover:text-red-500">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+
+                <!-- 店铺2 -->
+                <div class="store-card p-4 flex items-center">
+                    <div class="w-20 h-20 bg-teal-100 rounded-xl mr-4 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-gray-800">鸡鸣汤包</h3>
+                            <div class="bg-teal-100 text-teal-600 text-xs px-2 py-1 rounded-full">人气</div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">湖南路美食街</div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="material-icons text-xs">star</i>
+                                <span class="text-sm ml-1">4.6</span>
+                            </div>
+                            <div class="text-xs text-gray-500 ml-3">¥35/人</div>
+                            <div class="text-xs text-gray-500 ml-3">小吃</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-gray-400 hover:text-red-500">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+
+                <!-- 店铺3 -->
+                <div class="store-card p-4 flex items-center">
+                    <div class="w-20 h-20 bg-red-100 rounded-xl mr-4 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-gray-800">鸭血粉丝汤</h3>
+                            <div class="bg-red-100 text-red-600 text-xs px-2 py-1 rounded-full">必吃</div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">夫子庙景区</div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="material-icons text-xs">star</i>
+                                <span class="text-sm ml-1">4.7</span>
+                            </div>
+                            <div class="text-xs text-gray-500 ml-3">¥28/人</div>
+                            <div class="text-xs text-gray-500 ml-3">汤品</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-gray-400 hover:text-red-500">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+
+                <!-- 店铺4 -->
+                <div class="store-card p-4 flex items-center">
+                    <div class="w-20 h-20 bg-blue-100 rounded-xl mr-4 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-gray-800">金陵大肉包</h3>
+                            <div class="bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded-full">早餐</div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">新街口商圈</div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="material-icons text-xs">star</i>
+                                <span class="text-sm ml-1">4.5</span>
+                            </div>
+                            <div class="text-xs text-gray-500 ml-3">¥12/人</div>
+                            <div class="text-xs text-gray-500 ml-3">快餐</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-gray-400 hover:text-red-500">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+
+                <!-- 店铺5 -->
+                <div class="store-card p-4 flex items-center">
+                    <div class="w-20 h-20 bg-purple-100 rounded-xl mr-4 flex-shrink-0"></div>
+                    <div class="flex-1">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-gray-800">桂花糖芋苗</h3>
+                            <div class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">甜品</div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">秦淮河畔</div>
+                        <div class="flex items-center mt-2">
+                            <div class="flex items-center text-yellow-500">
+                                <i class="material-icons text-xs">star</i>
+                                <span class="text-sm ml-1">4.4</span>
+                            </div>
+                            <div class="text-xs text-gray-500 ml-3">¥15/人</div>
+                            <div class="text-xs text-gray-500 ml-3">甜品</div>
+                        </div>
+                    </div>
+                    <button class="favorite-btn text-gray-400 hover:text-red-500">
+                        <i class="material-icons">favorite</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航栏 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+        <div class="grid grid-cols-4">
+            <button onclick="window.location.href='diner_explore.html'" class="flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">explore</i>
+                <span class="text-xs mt-1">探索</span>
+            </button>
+            <button onclick="window.location.href='diner_social.html'" class="flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">people</i>
+                <span class="text-xs mt-1">社媒</span>
+            </button>
+            <button onclick="window.location.href='diner_collections.html'" class="flex flex-col items-center justify-center py-2 text-orange-500">
+                <i class="material-icons">favorite</i>
+                <span class="text-xs mt-1">收藏</span>
+            </button>
+            <button onclick="window.location.href='diner_settings.html'" class="flex flex-col items-center justify-center py-2 text-gray-500">
+                <i class="material-icons">settings</i>
+                <span class="text-xs mt-1">设置</span>
+            </button>
+        </div>
+    </div>
+</body>
+
+<script>
+        // 数据管理：使用localStorage存储收藏夹数据
+        function getCollections() {
+            const collections = localStorage.getItem('dinerCollections');
+            if (!collections) {
+                // 初始化默认收藏夹
+                const defaultCollections = [
+                    { id: 'default', name: '我的最爱', description: '收藏我最喜欢的店铺', privacy: 'private', icon: 'star', color: 'orange', stores: [] },
+                    { id: 'favorites', name: '早餐推荐', description: '早上必吃的美味', privacy: 'public', icon: 'local_cafe', color: 'teal', stores: [] },
+                    { id: 'lunch', name: '午餐精选', description: '工作日午餐好去处', privacy: 'public', icon: 'restaurant', color: 'red', stores: [] }
+                ];
+                localStorage.setItem('dinerCollections', JSON.stringify(defaultCollections));
+                return defaultCollections;
+            }
+            return JSON.parse(collections);
+        }
+        
+        function saveCollections(collections) {
+            localStorage.setItem('dinerCollections', JSON.stringify(collections));
+        }
+        
+        function addStoreToCollection(collectionId, store) {
+            const collections = getCollections();
+            const collection = collections.find(c => c.id === collectionId);
+            if (collection) {
+                // 检查店铺是否已存在
+                const storeExists = collection.stores.some(s => s.name === store.name);
+                if (!storeExists) {
+                    collection.stores.push(store);
+                    saveCollections(collections);
+                    updateCollectionOptions(); // 更新模态窗口中的收藏夹选项
+                    return true;
+                }
+            }
+            return false;
+        }
+        
+        // 关注收藏系列功能
+        const followCollectionBtn = document.getElementById('followCollectionBtn');
+        followCollectionBtn.addEventListener('click', () => {
+            const isFollowed = followCollectionBtn.classList.contains('active');
+            
+            if (isFollowed) {
+                // 取消关注
+                followCollectionBtn.classList.remove('active');
+                followCollectionBtn.querySelector('i').textContent = 'bookmark_border';
+                followCollectionBtn.querySelector('i').style.color = '#6b7280'; // 恢复默认灰色
+                showToast('已取消关注');
+            } else {
+                // 关注收藏系列
+                followCollectionBtn.classList.add('active');
+                followCollectionBtn.querySelector('i').textContent = 'bookmark';
+                followCollectionBtn.querySelector('i').style.color = '#ff9800'; // 使用橙色主题色
+                showToast('已加入关注收藏系列');
+            }
+        });
+        
+        // 加入收藏夹模态窗口
+        const addToCollectionModal = document.getElementById('addToCollectionModal');
+        const closeAddToCollectionModalBtn = document.getElementById('closeAddToCollectionModalBtn');
+        const cancelAddToCollectionBtn = document.getElementById('cancelAddToCollectionBtn');
+        const confirmAddToCollectionBtn = document.getElementById('confirmAddToCollectionBtn');
+        const collectionOptionsContainer = document.getElementById('collectionOptionsContainer');
+        const favoriteBtns = document.querySelectorAll('.favorite-btn');
+        
+        // 当前选中的店铺
+        let currentSelectedStore = null;
+        
+        // 显示模态窗口
+        function showAddToCollectionModal(store) {
+            currentSelectedStore = store;
+            updateCollectionOptions();
+            addToCollectionModal.classList.remove('hidden');
+        }
+        
+        // 隐藏模态窗口
+        function hideAddToCollectionModal() {
+            addToCollectionModal.classList.add('hidden');
+            currentSelectedStore = null;
+        }
+        
+        // 显示成功提示
+        function showToast(message) {
+            const toast = document.getElementById('successToast');
+            toast.querySelector('span').textContent = message;
+            toast.classList.remove('hidden');
+            toast.classList.add('success-toast');
+            
+            // 2秒后隐藏提示
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('success-toast');
+            }, 2000);
+        }
+        
+        // 更新收藏夹选项
+        function updateCollectionOptions() {
+            const collections = getCollections();
+            const optionsContainer = document.getElementById('collectionOptionsContainer');
+            
+            // 清空现有选项
+            optionsContainer.innerHTML = '';
+            
+            // 添加所有收藏夹选项
+            collections.forEach(collection => {
+                const option = document.createElement('div');
+                option.className = 'collection-option flex items-center p-3 cursor-pointer hover:bg-gray-50 rounded-lg';
+                
+                // 默认选中第一个收藏夹
+                if (collections.indexOf(collection) === 0) {
+                    option.classList.add('active');
+                }
+                
+                option.innerHTML = `
+                    <div class="w-5 mr-3 flex items-center justify-center">
+                        ${option.classList.contains('active') ? 
+                            '<div class="w-5 h-5 rounded-full border-2 border-orange-500 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-orange-500"></div></div>' : 
+                            '<div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>'}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            <i class="material-icons text-sm text-gray-500 mr-2">${collection.icon}</i>
+                            <div class="font-medium">${collection.name}</div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">${collection.stores.length}家门店</div>
+                    </div>
+                `;
+                
+                // 添加点击事件
+                option.addEventListener('click', () => {
+                    // 移除所有选项的active状态
+                    document.querySelectorAll('.collection-option').forEach(opt => {
+                        opt.classList.remove('active');
+                        opt.querySelector('.w-5').innerHTML = '<div class="w-5 h-5 rounded-full border-2 border-gray-300"></div>';
+                    });
+                    
+                    // 设置当前选项为active
+                    option.classList.add('active');
+                    option.querySelector('.w-5').innerHTML = '<div class="w-5 h-5 rounded-full border-2 border-orange-500 flex items-center justify-center"><div class="w-3 h-3 rounded-full bg-orange-500"></div></div>';
+                });
+                
+                optionsContainer.appendChild(option);
+            });
+        }
+        
+        // 获取当前选中的收藏夹ID
+        function getSelectedCollectionId() {
+            const activeOption = document.querySelector('.collection-option.active');
+            if (activeOption) {
+                const collections = getCollections();
+                const collectionName = activeOption.querySelector('.font-medium').textContent;
+                const collection = collections.find(c => c.name === collectionName);
+                return collection ? collection.id : null;
+            }
+            return null;
+        }
+        
+        // 点击爱心按钮打开加入收藏夹模态窗口
+        favoriteBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation(); // 阻止事件冒泡
+                
+                // 获取店铺信息
+                const storeCard = btn.closest('.store-card');
+                const storeName = storeCard.querySelector('h3').textContent;
+                const storeLocation = storeCard.querySelector('.text-sm.text-gray-500').textContent;
+                
+                // 创建店铺对象
+                const store = {
+                    name: storeName,
+                    location: storeLocation,
+                    addedAt: new Date().toISOString()
+                };
+                
+                // 显示收藏夹模态窗口
+                showAddToCollectionModal(store);
+            });
+        });
+        
+        // 关闭加入收藏夹模态窗口
+        closeAddToCollectionModalBtn.addEventListener('click', hideAddToCollectionModal);
+        cancelAddToCollectionBtn.addEventListener('click', hideAddToCollectionModal);
+        
+        // 点击模态窗口外部关闭
+        addToCollectionModal.addEventListener('click', (e) => {
+            if (e.target === addToCollectionModal) {
+                hideAddToCollectionModal();
+            }
+        });
+        
+        // 确认添加到收藏夹
+        confirmAddToCollectionBtn.addEventListener('click', () => {
+            if (!currentSelectedStore) return;
+            
+            const collectionId = getSelectedCollectionId();
+            if (!collectionId) return;
+            
+            const collections = getCollections();
+            const collection = collections.find(c => c.id === collectionId);
+            
+            // 实际添加店铺到收藏夹
+            const success = addStoreToCollection(collectionId, currentSelectedStore);
+            
+            if (success) {
+                // 显示成功提示
+                showToast(`已添加到${collection.name}`);
+            } else {
+                showToast('该店铺已在收藏夹中');
+            }
+            
+            // 隐藏模态窗口
+            hideAddToCollectionModal();
+        });
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCollectionOptions();
+        });
+    </script>
+</html>
