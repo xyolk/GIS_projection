@@ -1,11 +1,61 @@
-// 探索界面
 // pages/custom/diner_explore/index.ts
-export {}
-const app = getApp<IAppOption>()
+import { config } from '../../../config' // 高德地图api确保路径正确
 
-Page({
+const app = getApp<IAppOption>()
+const db = wx.cloud.database()
+
+// 1. 定义餐厅数据接口
+interface Restaurant {
+  id: number
+  _id?: string // 云数据库自动生成的ID
+  name: string
+  rating: number
+  tags: string[] | string // 兼容数据库可能存字符串的情况
+  location: string
+  price: number
+  distance: string
+  imageColor: string
+  latitude: number
+  longitude: number
+}
+
+// 2. 定义页面自定义方法的接口
+// 告诉 TS：我的 Page 实例里包含这些自定义函数
+interface CustomPageMethods {
+  initMap(): void;
+  getRestaurantsFromCloud(userLat: number, userLng: number): void;
+  updateMarkers(): void;
+  calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): string;
+  onMarkerTap(e: any): void;
+  onMapTap(): void;
+  onFilterTap(e: any): void;
+  switchTab(e: any): void;
+  onSearch(): void;
+  onNavigate(): void;
+  onFavorite(): void;
+  onCall(): void;
+}
+
+// 3. 定义 Data 的接口
+interface PageData {
+  latitude: number;
+  longitude: number;
+  scale: number;
+  markers: any[];
+  restaurants: Restaurant[];
+  filters: Array<{ name: string, active: boolean }>;
+  currentTab: string;
+}
+
+// 使用泛型 Page<PageData, CustomPageMethods> 彻底解决属性不存在的报错
+Page<PageData, CustomPageMethods>({
   data: {
-    // 筛选标签数据
+    latitude: 32.07863,  
+    longitude: 118.80527,
+    scale: 14,
+    markers: [],
+    restaurants: [],
+    
     filters: [
       { name: '全部', active: true },
       { name: '距离最近', active: false },
@@ -14,110 +64,262 @@ Page({
       { name: '江浙菜', active: false },
       { name: '火锅', active: false }
     ],
-    // 餐厅数据 (模拟)
-    restaurants: [
-      {
-        id: 1,
-        name: '南京大牌档',
-        rating: 4.8,
-        tags: ['江浙菜'],
-        location: '夫子庙景区',
-        price: 88,
-        distance: '1.2km',
-        imageColor: '#fff3e0' // 模拟图片背景色
-      },
-      {
-        id: 2,
-        name: '小厨娘淮扬菜',
-        rating: 4.6,
-        tags: ['淮扬菜'],
-        location: '新街口',
-        price: 128,
-        distance: '2.5km',
-        imageColor: '#e0f2f1'
-      },
-      {
-        id: 3,
-        name: '海底捞火锅',
-        rating: 4.7,
-        tags: ['火锅'],
-        location: '河西万达',
-        price: 158,
-        distance: '3.8km',
-        imageColor: '#ffebee'
-      }
-    ],
-    // 底部导航状态
     currentTab: 'explore'
   },
 
-  // 切换筛选标签
+  onLoad() {
+    this.initMap()
+  },
+
+  initMap() {
+    this.updateMarkers()
+    
+    wx.getLocation({
+      type: 'gcj02',
+      isHighAccuracy: true,
+      success: (res) => {
+        console.log('当前位置:', res.latitude, res.longitude)
+        
+        this.setData({
+          latitude: res.latitude,
+          longitude: res.longitude
+        })
+        this.getRestaurantsFromCloud(res.latitude, res.longitude)
+      },
+      fail: (err) => {
+        console.error('定位失败:', err)
+        wx.showToast({ title: '定位失败，显示默认位置', icon: 'none' })
+        // 定位失败也加载数据
+        this.getRestaurantsFromCloud(this.data.latitude, this.data.longitude)
+      }
+    })
+  },
+
+  getRestaurantsFromCloud(userLat: number, userLng: number) {
+    wx.showLoading({ title: '寻找美食中...' })
+
+    // 注意：确保你的云数据库里集合名称确实叫 'restaurant'
+    db.collection('restaurant').get().then(res => {
+      const rawList = res.data
+      if (rawList.length === 0) {
+        wx.showToast({ title: '附近没有餐厅', icon: 'none' })
+        wx.hideLoading()
+        return
+      }
+
+      const processedList = rawList.map((item: any) => {
+
+        // 1. 获取原始 WGS84 坐标
+        const rawLat = Number(item.wgs84_lat)
+        const rawLon = Number(item.wgs84_lon)
+
+        // 2. 调用转换函数 WGS84 -> GCJ02
+        // 如果数据转换失败(如NaN)，则默认使用原数据
+        let finalLat = rawLat;
+        let finalLon = rawLon;
+        
+        if (!isNaN(rawLat) && !isNaN(rawLon)) {
+           const gcjPoint = wgs84ToGcj02(rawLat, rawLon);
+           finalLat = gcjPoint.lat;
+           finalLon = gcjPoint.lon;
+        }
+
+        return {
+          ...item,
+          // 兼容处理：如果是字符串就转数组，如果是数组就直接用
+          // ID映射
+          id: item._id, 
+          
+          // 店名映射: shop_name -> name
+          name: item.shop_name || '未知店铺',
+          
+          // 地址映射: address -> location
+          location: item.address || '暂无地址',
+          
+          // 评分映射: avg_score -> rating
+          rating: Number(item.avg_score) || 4.0,
+          
+          // 价格映射: price -> price
+          price: item.price || 0, // 暂时给个0或者随机数
+          
+          // 标签映射: shop_type 是字符串，前端需要数组
+          // 如果数据库是 "小吃快餐"，这里转为 ["小吃快餐"]
+          tags: item.shop_type ? [item.shop_type] : ['美食'],
+
+          // 使用转换后的火星坐标赋值给 UI
+          latitude: finalLat,
+          longitude: finalLon,
+
+          // 图片背景
+          imageColor: item.imageColor || '#fff3e0',
+
+          // 距离计算
+          distance: this.calculateDistance(userLat, userLng, finalLat, finalLon),
+        }
+      })
+
+      this.setData({
+        restaurants: processedList
+      })    
+      this.updateMarkers()
+      wx.hideLoading()
+
+    }).catch(err => {
+      console.error('云数据库读取失败:', err)
+      wx.hideLoading()
+      wx.showToast({ title: '加载失败', icon: 'none' })
+    })
+  },
+
+  calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): string {
+    // 容错：防止数据缺失导致计算 NaN
+    if (!lat1 || !lng1 || !lat2 || !lng2) return '未知距离';
+
+    const radLat1 = lat1 * Math.PI / 180.0
+    const radLat2 = lat2 * Math.PI / 180.0
+    const a = radLat1 - radLat2
+    const b = (lng1 * Math.PI / 180.0) - (lng2 * Math.PI / 180.0)
+    let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+      Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)))
+    s = s * 6378.137
+    s = Math.round(s * 10000) / 10000
+    
+    if (s < 1) {
+      return Math.round(s * 1000) + 'm'
+    } else {
+      return s.toFixed(1) + 'km'
+    }
+  },
+
+  updateMarkers() {
+    const markers = this.data.restaurants.map((item) => {
+      return {
+        // 优先使用云数据库的 _id，如果没有则用 id
+        id: item._id || item.id || 0, 
+        latitude: item.latitude,
+        longitude: item.longitude,
+        width: 30,
+        height: 30,
+        callout: {
+          content: ` ${item.name} ¥${item.price}/人 `,
+          padding: 10,
+          borderRadius: 5,
+          bgColor: '#ffffff',
+          color: '#333333',
+          display: 'ALWAYS',
+          fontSize: 12
+        }
+      }
+    })
+    this.setData({ markers })
+  },
+
+  onMarkerTap(e: any) {
+    const restaurantId = e.markerId
+    // 注意：云数据库 ID 可能是 string，而 markerId 有时是 number，使用 == 进行弱类型比较更安全
+    const restaurant = this.data.restaurants.find(r => r.id == restaurantId || r._id == restaurantId)
+    
+    if (restaurant) {
+      console.log('选中了:', restaurant.name)
+      wx.showModal({
+        title: restaurant.name,
+        content: `评分：${restaurant.rating} | 距您 ${restaurant.distance}`,
+        showCancel: false
+      })
+    }
+  },
+
+  onMapTap() {
+    console.log('点击了地图空白处')
+  },
+
   onFilterTap(e: any) {
     const index = e.currentTarget.dataset.index
     const filters = this.data.filters.map((item, i) => ({
       ...item,
-      active: i === index // 简单的单选逻辑
+      active: i === index
     }))
     this.setData({ filters })
   },
 
-  // 底部导航切换
   switchTab(e: any) {
     const tab = e.currentTarget.dataset.tab
-    
-    // 定义正确的路径映射 (注意路径要与 app.json 里的完全一致)
     const urlMap: Record<string, string> = {
       'explore': '/pages/custom/diner_explore/index',
       'social': '/pages/custom/diner_social/index',
       'collection': '/pages/custom/diner_collection/index', 
       'settings': '/pages/custom/diner_settings/index'
     }
-
     const targetUrl = urlMap[tab]
-
-    // 校验目标路径是否存在
     if (targetUrl) {
-      // 智能判断：如果点击的是当前所在的页面，就不跳转
-      // 获取当前页面栈的最后一个元素（即当前页）
       const pages = getCurrentPages()
       const currentPage = pages[pages.length - 1]
-      
-      // 如果目标 URL 包含了当前页面的路径字符串，说明点的是自己，直接返回
-      // (加上 / 可以防止类似 /user 和 /user_list 的误判)
-      if (targetUrl.includes(currentPage.route)) {
-        return
-      }
-
-      // 执行跳转
+      if (targetUrl.includes(currentPage.route)) return
       wx.reLaunch({
         url: targetUrl,
-        fail: (err) => {
-          console.error('跳转失败:', err)
-          wx.showToast({ title: '路径错误，请检查文件夹名', icon: 'none' })
-        }
+        fail: (err) => console.error('跳转失败:', err)
       })
-    } else {
-      console.error('未找到对应的 tab 映射:', tab)
     }
   },
 
-  // 搜索点击
   onSearch() {
-    wx.navigateTo({ url: '/pages/custom/diner_search_detail/index' })
+    wx.navigateTo({ url: '/pages/custom/searching/index' })
   },
-
-  // 导航点击
   onNavigate() {
     wx.showToast({ title: '开始导航', icon: 'none' })
   },
-
-  // 收藏点击
   onFavorite() {
     wx.showToast({ title: '已收藏', icon: 'success' })
   },
-  
-  // 电话点击
   onCall() {
     wx.makePhoneCall({ phoneNumber: '12345678900' })
   }
 })
+
+
+
+
+// 坐标转换算法
+const x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+
+function wgs84ToGcj02(lat: number, lon: number) {
+  if (outOfChina(lat, lon)) {
+    return { lat, lon };
+  }
+  const a = 6378245.0;
+  const ee = 0.00669342162296594323;
+  let dLat = transformLat(lon - 105.0, lat - 35.0);
+  let dLon = transformLon(lon - 105.0, lat - 35.0);
+  const radLat = lat / 180.0 * Math.PI;
+  let magic = Math.sin(radLat);
+  magic = 1 - ee * magic * magic;
+  const sqrtMagic = Math.sqrt(magic);
+  dLat = (dLat * 180.0) / ((a * (1 - ee)) / (magic * sqrtMagic) * Math.PI);
+  dLon = (dLon * 180.0) / (a / sqrtMagic * Math.cos(radLat) * Math.PI);
+  return {
+    lat: lat + dLat,
+    lon: lon + dLon
+  };
+}
+
+function transformLat(x: number, y: number) {
+  let ret = -100.0 + 2.0 * x + 3.0 * y + 0.2 * y * y + 0.1 * x * y + 0.2 * Math.sqrt(Math.abs(x));
+  ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
+  ret += (20.0 * Math.sin(y * Math.PI) + 40.0 * Math.sin(y / 3.0 * Math.PI)) * 2.0 / 3.0;
+  ret += (160.0 * Math.sin(y / 12.0 * Math.PI) + 320 * Math.sin(y * Math.PI / 30.0)) * 2.0 / 3.0;
+  return ret;
+}
+
+function transformLon(x: number, y: number) {
+  let ret = 300.0 + x + 2.0 * y + 0.1 * x * x + 0.1 * x * y + 0.1 * Math.sqrt(Math.abs(x));
+  ret += (20.0 * Math.sin(6.0 * x * Math.PI) + 20.0 * Math.sin(2.0 * x * Math.PI)) * 2.0 / 3.0;
+  ret += (20.0 * Math.sin(x * Math.PI) + 40.0 * Math.sin(x / 3.0 * Math.PI)) * 2.0 / 3.0;
+  ret += (150.0 * Math.sin(x / 12.0 * Math.PI) + 300.0 * Math.sin(x / 30.0 * Math.PI)) * 2.0 / 3.0;
+  return ret;
+}
+
+function outOfChina(lat: number, lon: number) {
+  if (lon < 72.004 || lon > 137.8347) return true;
+  if (lat < 0.8293 || lat > 55.8271) return true;
+  return false;
+}

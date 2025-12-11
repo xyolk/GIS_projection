@@ -23,7 +23,6 @@ page {
   gap: 20rpx;
   box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
   
-  /* 关键修改：固定在顶部，不随页面滚动 */
   position: fixed; 
   top: 0;
   left: 0;
@@ -51,29 +50,38 @@ page {
 }
 
 /* 2. 地图区域 */
-.map-container {
-  /* 关键修改：地图改为固定定位，铺满全屏，作为背景层 */
-  position: fixed;
+/* 真地图组件样式 */
+.map-bg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed; /* 固定在最底层 */
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* UI 悬浮层容器 */
+/* 对应 WXML 中的 <view class="ui-layer"> */
+.ui-layer {
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  z-index: 0; /* 层级最低 */
-  
-  /* 模拟 HTML 中的渐变地图背景 */
-  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
-  overflow: hidden;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none; /* 关键！让点击事件穿透空白区域到达地图 */
 }
 
-/* 地图按钮保持不变，但因为地图fixed了，它们也会自然悬浮 */
+/* 地图上的控件按钮 */
 .map-controls {
   position: absolute;
-  top: 140rpx; /* 修改：因为有了固定搜索栏，需要避开顶部距离 */
+  top: 240rpx; /* 调整位置，避开顶部搜索栏 */
   right: 30rpx;
   display: flex;
   flex-direction: column;
   gap: 20rpx;
-  z-index: 10; /* 保证可点击 */
+  z-index: 10;
+  pointer-events: auto; /* 关键：恢复按钮点击 */
 }
 
 .control-btn {
@@ -87,46 +95,6 @@ page {
   box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
 }
 
-/* 地图标记样式保持不变... */
-.map-marker {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.marker-pin {
-  width: 60rpx;
-  height: 60rpx;
-  background-color: #ff9800;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 10rpx rgba(255, 152, 0, 0.4);
-  font-size: 32rpx;
-  z-index: 2;
-}
-.marker-bubble {
-  position: absolute;
-  top: 70rpx;
-  background-color: white;
-  padding: 16rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.15);
-  min-width: 200rpx;
-  z-index: 1;
-  white-space: nowrap;
-}
-/* ...其他 marker 样式保持不变... */
-.marker-title { font-weight: bold; color: #333; font-size: 26rpx; margin-bottom: 6rpx; }
-.marker-info { display: flex; align-items: center; font-size: 22rpx; color: #666; }
-.ml-1 { margin-left: 6rpx; }
-.mx-1 { margin: 0 6rpx; }
-
-
 /* 3. 底部面板 (核心修改区域) */
 .bottom-sheet {
   background-color: white;
@@ -135,21 +103,17 @@ page {
   padding: 30rpx 30rpx 0 30rpx;
   box-shadow: 0 -5rpx 20rpx rgba(0,0,0,0.05);
   
-  /* 关键修改：取消固定高度，改为相对定位 + 上边距 */
   position: relative;
-  z-index: 1; /* 比地图高，覆盖在地图上 */
+  z-index: 1; 
   
-  /* 这里决定了初始状态下地图露出多少。55vh 意味着地图露出一半多一点 */
-  margin-top: 55vh; 
-  
-  /* 保证面板至少能铺满剩下的屏幕，允许无限下拉 */
+  /* 这里决定了初始状态下地图露出多少 */
+  margin-top: 60vh; 
   min-height: 100vh; 
-  
-  /* 底部增加内边距，防止内容被 TabBar 遮挡 */
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
   
   display: flex;
   flex-direction: column;
+  pointer-events: auto;
 }
 
 /* 筛选标签容器 */
@@ -163,13 +127,10 @@ page {
   
   /* 关键修改：粘性定位 */
   position: sticky;
-  /* 110rpx 大约是 top-bar 的高度 (70 + 20 + 20)，让它刚好吸附在搜索栏下面 */
   top: 110rpx; 
-  z-index: 50; /* 保证浮在列表内容之上 */
+  z-index: 50; 
   
-  /* 必须给背景色，否则吸顶时列表内容会透过文字显示出来 */
   background-color: white; 
-  /* 稍微调整一下 padding 抵消 sticky 带来的视觉误差 */
   margin-left: -30rpx;
   margin-right: -30rpx;
   padding-left: 30rpx;
@@ -177,7 +138,14 @@ page {
   padding-top: 10rpx;
 }
 
-/* 标签样式保持不变 */
+.filter-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+/* 标签样式 */
 .filter-tag {
   padding: 12rpx 30rpx;
   background-color: #f3f4f6;
@@ -212,9 +180,6 @@ page {
 
 /* 餐厅列表 */
 .restaurant-list {
-  /* 修改：取消 flex:1 和 overflow，让它自然撑开页面高度 */
-  /* flex: 1;  删除 */
-  /* overflow-y: auto; 删除 */
   height: auto;
 }
 
@@ -244,7 +209,7 @@ page {
 .card-actions { background-color: #f9fafb; padding: 16rpx 24rpx; display: flex; justify-content: flex-end; gap: 30rpx; }
 .action-btn { display: flex; align-items: center; }
 
-/* 4. 底部导航栏保持不变 (Fixed 定位不受上述修改影响) */
+/* 4. 底部导航栏 */
 .tab-bar {
   position: fixed;
   bottom: 0;
@@ -256,6 +221,7 @@ page {
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
+  pointer-events: auto;
 }
 /* ... tab-item 等保持不变 ... */
 .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af; transition: all 0.3s; }

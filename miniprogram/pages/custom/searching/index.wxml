@@ -1,0 +1,131 @@
+<view class="page-container">
+  
+  <view class="search-header">
+    <view class="search-bar-row">
+      <view class="back-btn" bindtap="onBack">
+        <t-icon name="chevron-left" size="48rpx" color="#666" />
+      </view>
+      
+      <view class="search-input-box">
+        <t-icon name="search" size="40rpx" color="#9ca3af" class="search-icon" />
+        <input 
+          class="search-input" 
+          placeholder="请输入地址或餐厅名" 
+          placeholder-class="placeholder-style"
+          value="{{keyword}}"
+          bindinput="onInput"
+          bindconfirm="onSearch"
+          confirm-type="search"
+          focus="{{true}}"
+        />
+        <view class="clear-btn" wx:if="{{keyword}}" bindtap="onClearInput">
+          <t-icon name="close-circle-filled" size="32rpx" color="#ccc" />
+        </view>
+      </view>
+      
+      <view class="map-btn" bindtap="onBack">
+        <t-icon name="location" size="48rpx" color="#666" />
+      </view>
+    </view>
+
+    <view class="quick-location-btn" bindtap="onUseCurrentLocation">
+      <t-icon name="gps" size="36rpx" color="#ff9800" />
+      <text class="location-text">定位到目前所在地</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="main-content">
+    
+    <view class="search-results" wx:if="{{keyword && searchList.length > 0}}">
+      <view class="section-title">搜索结果</view>
+      <block wx:for="{{searchList}}" wx:key="id">
+        <view class="restaurant-card" bindtap="onSelectLocation" data-item="{{item}}">
+          <view class="card-content">
+            <view class="card-image" style="background-color: {{item.imageColor}}"></view>
+            <view class="card-info">
+              <view class="shop-name-row">
+                <text class="shop-name">{{item.name}}</text>
+              </view>
+              <view class="shop-meta-row">
+                <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
+                <text class="rating-num">{{item.rating}}</text>
+                <text class="divider">·</text>
+                <text class="tag-text">{{item.tags[0]}}</text>
+              </view>
+              <view class="shop-addr-row">
+                <t-icon name="location" size="24rpx" color="#9ca3af" />
+                <text class="addr-text">{{item.location}}</text>
+              </view>
+              <view class="shop-price-row">
+                <text class="price-text">¥{{item.price}}/人</text>
+                <text class="distance-text">{{item.distance || '未知距离'}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <view wx:else>
+      
+      <view class="section-group" wx:if="{{historyList.length > 0}}">
+        <view class="section-header">
+          <text class="section-title">最近搜索</text>
+          <view class="clear-history-btn" bindtap="onClearHistory">清除</view>
+        </view>
+        <view class="history-list">
+          <block wx:for="{{historyList}}" wx:key="*this">
+            <view class="history-item">
+              <view class="history-left" bindtap="onHistoryTap" data-keyword="{{item}}">
+                <t-icon name="time" size="32rpx" color="#9ca3af" />
+                <text class="history-text">{{item}}</text>
+              </view>
+              <view class="history-delete" catchtap="onDeleteHistoryItem" data-keyword="{{item}}">
+                <t-icon name="close" size="32rpx" color="#9ca3af" />
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+
+      <view class="section-group">
+        <view class="section-header">
+          <text class="section-title">最近浏览</text>
+          <text class="view-all-btn" bindtap="onViewAll">查看全部</text>
+        </view>
+        <view class="recommend-list">
+          <block wx:for="{{hotList}}" wx:key="id">
+            <view class="restaurant-card" bindtap="onSelectLocation" data-item="{{item}}">
+              <view class="card-content">
+                <view class="card-image" style="background-color: {{item.imageColor}}"></view>
+                <view class="card-info">
+                  <view class="shop-name">{{item.name}}</view>
+                  <view class="shop-meta-row">
+                    <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
+                    <text class="rating-num">{{item.rating}}</text>
+                    <text class="divider">·</text>
+                    <text class="tag-text">{{item.tags[0]}}</text>
+                  </view>
+                  <view class="shop-addr-row">
+                    <t-icon name="location" size="24rpx" color="#9ca3af" />
+                    <text class="addr-text">{{item.location}}</text>
+                  </view>
+                  <view class="shop-price-row">
+                    <text class="price-text">¥{{item.price}}/人</text>
+                    <view class="nav-action-btn" catchtap="onSelectLocation" data-item="{{item}}">
+                      <text class="distance-text mr-2">{{item.distance || ''}}</text>
+                      <view class="nav-icon-circle">
+                         <t-icon name="navigation-arrow" size="28rpx" color="white" />
+                      </view>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </block>
+        </view>
+      </view>
+
+    </view>
+  </scroll-view>
+</view>

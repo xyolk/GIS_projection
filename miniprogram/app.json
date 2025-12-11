@@ -7,13 +7,22 @@
     "pages/custom/diner_explore/index",
     "pages/custom/diner_social/index",
     "pages/custom/diner_collection/index",
-    "pages/custom/diner_settings/index"
+    "pages/custom/diner_settings/index",
+    "pages/custom/searching/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "寻味金陵",
     "navigationBarBackgroundColor": "#ffffff"
   },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "我们需要您的位置以展示附近的餐厅"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
   "componentFramework": "glass-easel",
   "lazyCodeLoading": "requiredComponents"
 }

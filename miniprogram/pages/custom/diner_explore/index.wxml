@@ -1,5 +1,19 @@
-<!-- 发现美食界面 -->
 <view class="page-container">
+
+<map 
+  id="myMap"
+  class="map-bg"
+  longitude="{{longitude}}"
+  latitude="{{latitude}}"
+  scale="{{scale}}"
+  markers="{{markers}}"
+  show-location="true"
+  bindmarkertap="onMarkerTap"
+  bindtap="onMapTap"
+>
+  </map>
+
+<view class="ui-layer">
   
   <view class="top-bar">
     <t-icon name="view-list" size="48rpx" color="#666" />
@@ -10,36 +24,12 @@
     <t-icon name="notification" size="48rpx" color="#666" />
   </view>
 
-  <view class="map-container">
-    <view class="map-controls">
-      <view class="control-btn"><t-icon name="layers" size="44rpx" color="#4b5563" /></view>
-      <view class="control-btn"><t-icon name="location" size="44rpx" color="#ff9800" /></view>
+  <view class="map-controls">
+    <view class="control-btn" bindtap="onShowLayers">
+      <t-icon name="layers" size="44rpx" color="#4b5563" />
     </view>
-
-    <view class="map-marker" style="top: 40%; left: 30%;">
-      <view class="marker-pin">1</view>
-      <view class="marker-bubble">
-        <view class="marker-title">南京大牌档</view>
-        <view class="marker-info">
-          <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
-          <text class="ml-1">4.8</text>
-          <text class="mx-1">·</text>
-          <text>1.2km</text>
-        </view>
-      </view>
-    </view>
-
-    <view class="map-marker" style="top: 25%; left: 65%;">
-      <view class="marker-pin">2</view>
-      <view class="marker-bubble">
-        <view class="marker-title">小厨娘淮扬菜</view>
-        <view class="marker-info">
-          <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
-          <text class="ml-1">4.6</text>
-          <text class="mx-1">·</text>
-          <text>2.5km</text>
-        </view>
-      </view>
+    <view class="control-btn" bindtap="initMap">
+      <t-icon name="location" size="44rpx" color="#ff9800" />
     </view>
   </view>
 
@@ -57,55 +47,59 @@
       </block>
     </scroll-view>
 
-    <view class="restaurant-list">
-      <block wx:for="{{restaurants}}" wx:key="id">
-        <view class="restaurant-card">
-          <view class="card-content">
-            <view class="card-image" style="background-color: {{item.imageColor}}"></view>
-            <view class="card-info">
-              <view class="shop-name">{{item.name}}</view>
-              <view class="shop-rating-row">
-                <t-icon name="star-filled" size="28rpx" color="#fbbf24" />
-                <text class="rating-num">{{item.rating}}</text>
-                <text class="divider">·</text>
-                <text class="tag-text">{{item.tags[0]}}</text>
-              </view>
-              <view class="shop-location-row">
-                <t-icon name="location" size="28rpx" color="#9ca3af" />
-                <text class="location-text">{{item.location}}</text>
-              </view>
-              <view class="shop-price-row">
-                <text class="price-text">¥{{item.price}}/人</text>
-                <text class="distance-text">{{item.distance}}</text>
+    <scroll-view scroll-y class="restaurant-scroll" style="height: 50vh;">
+      <view class="restaurant-list">
+        <block wx:for="{{restaurants}}" wx:key="id">
+          <view class="restaurant-card" id="card-{{item.id}}">
+            <view class="card-content">
+              <view class="card-image" style="background-color: {{item.imageColor}}"></view>
+              <view class="card-info">
+                <view class="shop-name">{{item.name}}</view>
+                <view class="shop-rating-row">
+                  <t-icon name="star-filled" size="28rpx" color="#fbbf24" />
+                  <text class="rating-num">{{item.rating}}</text>
+                  <text class="divider">·</text>
+                  <text class="tag-text">{{item.tags[0]}}</text>
+                </view>
+                <view class="shop-location-row">
+                  <t-icon name="location" size="28rpx" color="#9ca3af" />
+                  <text class="location-text">{{item.location}}</text>
+                </view>
+                <view class="shop-price-row">
+                  <text class="price-text">¥{{item.price}}/人</text>
+                  <text class="distance-text">{{item.distance}}</text>
+                </view>
               </view>
             </view>
+            
+            <view class="card-actions">
+              <view class="action-btn" bindtap="onNavigate"><t-icon name="navigation-arrow" size="40rpx" color="#666" /></view>
+              <view class="action-btn" bindtap="onFavorite"><t-icon name="heart" size="40rpx" color="#666" /></view>
+              <view class="action-btn" bindtap="onCall"><t-icon name="call" size="40rpx" color="#666" /></view>
+            </view>
           </view>
-          
-          <view class="card-actions">
-            <view class="action-btn" bindtap="onNavigate"><t-icon name="navigation-arrow" size="40rpx" color="#666" /></view>
-            <view class="action-btn" bindtap="onFavorite"><t-icon name="heart" size="40rpx" color="#666" /></view>
-            <view class="action-btn" bindtap="onCall"><t-icon name="call" size="40rpx" color="#666" /></view>
-          </view>
-        </view>
-      </block>
-      <view style="height: 120rpx;"></view>
-    </view>
-  </view>
+        </block>
+        <view style="height: 120rpx;"></view>
+      </view>
+    </scroll-view>
 
-  <view class="tab-bar">
-    <view class="tab-item {{currentTab === 'explore' ? 'active' : ''}}" bindtap="switchTab" data-tab="explore">
-      <t-icon name="compass" size="48rpx" /> <text class="tab-text">探索</text>
-    </view>
-    <view class="tab-item" bindtap="switchTab" data-tab="social">
-      <t-icon name="usergroup" size="48rpx" /> <text class="tab-text">社媒</text>
-    </view>
-    <view class="tab-item" bindtap="switchTab" data-tab="collection">
-      <t-icon name="heart" size="48rpx" />
-      <text class="tab-text">收藏</text>
-    </view>
-    <view class="tab-item" bindtap="switchTab" data-tab="settings">
-      <t-icon name="setting" size="48rpx" />
-      <text class="tab-text">设置</text>
-    </view>
   </view>
+</view>
+
+<view class="tab-bar">
+  <view class="tab-item {{currentTab === 'explore' ? 'active' : ''}}" bindtap="switchTab" data-tab="explore">
+    <t-icon name="compass" size="48rpx" /> <text class="tab-text">探索</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-tab="social">
+    <t-icon name="usergroup" size="48rpx" /> <text class="tab-text">社媒</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-tab="collection">
+    <t-icon name="heart" size="48rpx" />
+    <text class="tab-text">收藏</text>
+  </view>
+  <view class="tab-item" bindtap="switchTab" data-tab="settings">
+    <t-icon name="setting" size="48rpx" />
+    <text class="tab-text">设置</text>
+  </view>
+</view>
 </view>

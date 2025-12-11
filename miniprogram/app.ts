@@ -2,6 +2,15 @@
 App<IAppOption>({
   globalData: {},
   onLaunch() {
+    // 初始化云开发
+    if (!wx.cloud) {
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+    } else {
+      wx.cloud.init({
+        // env: '你的环境ID', // 如果只有一个环境，这行可以不写，自动默认
+        traceUser: true,
+      })
+    }
     // 展示本地存储能力
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
