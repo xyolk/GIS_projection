@@ -10,6 +10,7 @@
 
 ## 使用说明
 将项目文件粘贴到微信小程序开发项目中，替换掉同名文件夹即可使用。
+加载云数据库——建立restaurant表，直接导入custom文件夹下的restaurant_data.csv即可
 
 ## 依赖安装
 使用之前需要下载TDesign组件库：https://tdesign.tencent.com/miniprogram/getting-started
