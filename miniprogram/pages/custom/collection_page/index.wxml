@@ -1,0 +1,117 @@
+<view class="page-container">
+
+<view class="header-section">
+  <view class="collection-header">
+    <view class="icon-box">
+      <t-icon name="star-filled" size="48rpx" color="#ff9800" />
+    </view>
+    <view class="info-box">
+      <view class="title">{{collectionInfo.title}}</view>
+      <view class="subtitle">
+        <text>{{collectionInfo.creator}}</text>
+        <text class="divider">·</text>
+        <text>{{collectionInfo.createDate}} 创建</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="description">{{collectionInfo.description}}</view>
+  
+  <view class="action-row">
+    <t-button size="small" variant="outline" theme="default" bindtap="onShareCollection" icon="share">
+      分享
+    </t-button>
+    <view style="width: 20rpx;"></view>
+    <t-button 
+      size="small" 
+      theme="{{collectionInfo.isFollowed ? 'primary' : 'light'}}"
+      variant="{{collectionInfo.isFollowed ? 'base' : 'outline'}}"
+      icon="{{collectionInfo.isFollowed ? 'check' : 'add'}}"
+      bindtap="onToggleFollow"
+      class="{{collectionInfo.isFollowed ? 'btn-followed' : ''}}"
+    >
+      {{collectionInfo.isFollowed ? '已关注' : '关注系列'}}
+    </t-button>
+  </view>
+</view>
+
+<view class="list-section">
+  <view class="list-header">
+    <text class="list-title">收藏的店铺 ({{stores.length}})</text>
+  </view>
+
+  <view class="store-list">
+    <block wx:for="{{stores}}" wx:key="id">
+      <view class="store-card" bindtap="onNavigateToStore" data-id="{{item.id}}">
+        <view class="store-img" style="background-color: {{item.imageColor}}"></view>
+        
+        <view class="store-info">
+          <view class="row-between">
+            <text class="store-name">{{item.name}}</text>
+            <t-tag wx:if="{{item.tag}}" variant="light" size="small" class="custom-tag-{{item.tagColor}}">
+              {{item.tag}}
+            </t-tag>
+          </view>
+          
+          <view class="store-loc">{{item.location}}</view>
+          
+          <view class="row-bottom">
+            <view class="rating-box">
+              <t-icon name="star-filled" size="24rpx" color="#ff9800" />
+              <text class="rating-num">{{item.rating}}</text>
+            </view>
+            <text class="meta-text">¥{{item.price}}/人</text>
+            <text class="meta-text">{{item.category}}</text>
+          </view>
+        </view>
+        
+        <view class="fav-btn" catchtap="onFavoriteStore" data-index="{{index}}">
+          <t-icon name="heart" size="40rpx" color="#9ca3af" />
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<t-popup visible="{{showModal}}" bind:visible-change="onCloseModal" placement="bottom">
+  <view class="modal-container">
+    <view class="modal-header">
+      <text class="modal-title">加入收藏夹</text>
+      <t-icon name="close" size="48rpx" bindtap="onCloseModal" color="#999" />
+    </view>
+    
+    <view class="modal-body">
+      <view class="modal-desc">选择要添加到的收藏夹：</view>
+      
+      <t-radio-group value="{{targetCollectionId}}" bind:change="onSelectCollectionChange">
+        <block wx:for="{{myCollections}}" wx:key="id">
+          <view class="collection-item {{targetCollectionId === item.id ? 'active' : ''}}">
+            <t-radio value="{{item.id}}" label="" icon="none" borderless style="display:none;" />
+            
+            <view class="c-icon-box c-bg-{{item.color}}" bindtap="onSelectCollectionChange" data-value="{{item.id}}">
+               <t-icon name="{{item.icon === 'star' ? 'star' : item.icon === 'cake' ? 'gift' : 'coffee'}}" size="36rpx" color="{{item.color === 'orange' ? '#ff9800' : item.color === 'blue' ? '#2196f3' : '#4caf50'}}" />
+            </view>
+            
+            <view class="c-info" bindtap="onSelectCollectionChange" data-value="{{item.id}}">
+              <view class="c-name">{{item.name}}</view>
+              <view class="c-count">{{item.count}}家门店</view>
+            </view>
+            
+            <view class="c-check" bindtap="onSelectCollectionChange" data-value="{{item.id}}">
+              <view class="check-circle {{targetCollectionId === item.id ? 'checked' : ''}}">
+                <view wx:if="{{targetCollectionId === item.id}}" class="check-dot"></view>
+              </view>
+            </view>
+          </view>
+        </block>
+      </t-radio-group>
+    </view>
+
+    <view class="modal-footer">
+      <t-button variant="outline" theme="default" bindtap="onCloseModal" block style="margin-right: 20rpx; flex:1;">取消</t-button>
+      <t-button theme="primary" bindtap="onConfirmAdd" block style="flex:1; --td-brand-color: #ff9800;">确认添加</t-button>
+    </view>
+  </view>
+</t-popup>
+
+</view>

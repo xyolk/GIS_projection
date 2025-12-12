@@ -31,6 +31,20 @@ Page({
     ]
   },
 
+  onShow() {
+    // 1. 读取“我的收藏”
+    const localMy = wx.getStorageSync('diner_my_collections');
+    if (localMy) {
+      this.setData({ myCollections: localMy });
+    }
+
+    // 2. 读取“关注列表”
+    const localFollow = wx.getStorageSync('diner_followed_list');
+    if (localFollow) {
+      this.setData({ followedList: localFollow });
+    }
+  },
+
   // 1. 底部导航切换
   switchTab(e: any) {
     const tab = e.currentTarget.dataset.tab
@@ -111,14 +125,83 @@ Page({
       iconColor: random.color,
       bgClass: random.bg
     }
+    // 获取最新的列表
+    const newList = [...this.data.myCollections, newItem];
 
     this.setData({
-      myCollections: [...myCollections, newItem], // 添加到列表末尾
+      myCollections: newList, // 添加到列表末尾
       showModal: false,
       inputName: '',
       inputDesc: ''
     })
 
+    wx.setStorageSync('diner_my_collections', newList);
+    wx.showToast({ title: '创建成功', icon: 'success' });
+
     wx.showToast({ title: '创建成功', icon: 'success' })
+  },
+
+  onToDetail(e: any) {
+    // 获取点击时传递的 ID 和 标题
+    const { id, name } = e.currentTarget.dataset;
+    
+    console.log(`正在跳转到收藏夹: ${name} (ID: ${id})`);
+
+    // 跳转到详情页，并把 id 和 name 作为参数传过去
+    // 注意：请确保下方 url 路径与你实际的详情页路径一致！
+    wx.navigateTo({
+      url: `/pages/custom/collection_page/index?id=${id}&name=${name}`,
+      fail: (err) => {
+        console.error('跳转详情页失败:', err);
+        wx.showToast({ title: '跳转失败', icon: 'none' });
+      }
+    });
+  },
+
+  onLongPressCard(e: any) {
+    const { id, name, type } = e.currentTarget.dataset;
+
+    // 1. 弹出底部操作菜单
+    wx.showActionSheet({
+      itemList: ['删除该收藏夹'],
+      itemColor: '#FF0000', // 红色文字警示
+      success: (res) => {
+        if (res.tapIndex === 0) {
+          // 2. 二次确认弹窗
+          wx.showModal({
+            title: '确认删除',
+            content: `确定要删除“${name}”吗？此操作无法恢复。`,
+            confirmColor: '#FF0000',
+            success: (modalRes) => {
+              if (modalRes.confirm) {
+                this.deleteCollection(id, type);
+              }
+            }
+          });
+        }
+      }
+    });
+  },
+
+  deleteCollection(targetId: number, type: string) {
+    if (type === 'my') {
+      // 从“我的收藏”中删除
+      const updatedList = this.data.myCollections.filter((item: any) => item.id !== targetId);
+      this.setData({ myCollections: updatedList });
+
+      // 同步缓存
+      wx.setStorageSync('diner_my_collections', updatedList);
+      
+      wx.showToast({ title: '已删除', icon: 'success' });
+    } 
+    else if (type === 'follow') {
+      // 从“关注列表”中删除 (取消关注)
+      const updatedList = this.data.followedList.filter((item: any) => item.id !== targetId);
+      this.setData({ followedList: updatedList });
+
+      wx.setStorageSync('diner_followed_list', updatedList);
+      wx.showToast({ title: '已取消关注', icon: 'success' });
+    }
   }
-})
+});
+  

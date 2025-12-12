@@ -29,6 +29,8 @@ page {
   width: 100%;
   box-sizing: border-box; /* 确保 padding 不撑大宽度 */
   z-index: 100; /* 层级最高 */
+
+  pointer-events: auto
 }
 
 /* 搜索框内部样式保持不变 */

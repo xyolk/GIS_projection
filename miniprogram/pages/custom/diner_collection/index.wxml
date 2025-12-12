@@ -13,7 +13,12 @@
       <view class="section-title">智能推荐系列</view>
       <scroll-view scroll-x class="horizontal-scroll" enable-flex>
         <block wx:for="{{recommendList}}" wx:key="id">
-          <view class="collection-card recommend-card">
+          <view 
+            class="collection-card recommend-card" 
+            bindtap="onToDetail" 
+            data-id="{{item.id}}" 
+            data-name="{{item.name}}"
+          >
             <view class="card-img {{item.bgClass}}"></view>
             <view class="card-body">
               <view class="card-name">{{item.name}}</view>
@@ -32,7 +37,14 @@
       <view class="section-title">我的收藏系列</view>
       <scroll-view scroll-x class="horizontal-scroll" enable-flex>
         <block wx:for="{{myCollections}}" wx:key="id">
-          <view class="collection-card my-card">
+          <view 
+            class="collection-card my-card"
+            bindtap="onToDetail" 
+            bindlongpress="onLongPressCard"  
+            data-id="{{item.id}}" 
+            data-name="{{item.name}}"
+            data-type="my"
+          >
             <view class="my-card-icon {{item.bgClass}}">
               <t-icon name="{{item.icon}}" size="64rpx" color="{{item.iconColor}}" />
             </view>
@@ -56,7 +68,14 @@
       <view class="section-title">关注收藏系列</view>
       <scroll-view scroll-x class="horizontal-scroll" enable-flex>
         <block wx:for="{{followedList}}" wx:key="id">
-          <view class="collection-card recommend-card">
+          <view 
+            class="collection-card recommend-card"
+            bindtap="onToDetail" 
+            bindlongpress="onLongPressCard"
+            data-id="{{item.id}}" 
+            data-name="{{item.name}}"
+            data-type="follow"
+          >
             <view class="card-img {{item.bgClass}}"></view>
             <view class="card-body">
               <view class="card-name">{{item.name}}</view>

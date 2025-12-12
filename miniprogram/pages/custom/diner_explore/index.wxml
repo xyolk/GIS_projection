@@ -10,6 +10,7 @@
   show-location="true"
   bindmarkertap="onMarkerTap"
   bindtap="onMapTap"
+  enable-satellite="{{enableSatellite}}"
 >
   </map>
 
@@ -17,6 +18,7 @@
   
   <view class="top-bar">
     <t-icon name="view-list" size="48rpx" color="#666" />
+    
     <view class="search-box" bindtap="onSearch">
       <t-icon name="search" size="40rpx" color="#999" class="search-icon" />
       <text class="search-placeholder">搜索美食或地点</text>
@@ -46,6 +48,7 @@
         </view>
       </block>
     </scroll-view>
+
 
     <scroll-view scroll-y class="restaurant-scroll" style="height: 50vh;">
       <view class="restaurant-list">
@@ -85,6 +88,7 @@
 
   </view>
 </view>
+
 
 <view class="tab-bar">
   <view class="tab-item {{currentTab === 'explore' ? 'active' : ''}}" bindtap="switchTab" data-tab="explore">

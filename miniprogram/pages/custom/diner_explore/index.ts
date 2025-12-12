@@ -34,6 +34,7 @@ interface CustomPageMethods {
   onNavigate(): void;
   onFavorite(): void;
   onCall(): void;
+  onShowLayers(): void;
 }
 
 // 3. 定义 Data 的接口
@@ -45,6 +46,7 @@ interface PageData {
   restaurants: Restaurant[];
   filters: Array<{ name: string, active: boolean }>;
   currentTab: string;
+  enableSatellite: boolean;
 }
 
 // 使用泛型 Page<PageData, CustomPageMethods> 彻底解决属性不存在的报错
@@ -53,6 +55,7 @@ Page<PageData, CustomPageMethods>({
     latitude: 32.07863,  
     longitude: 118.80527,
     scale: 14,
+    enableSatellite: false,
     markers: [],
     restaurants: [],
     
@@ -67,6 +70,7 @@ Page<PageData, CustomPageMethods>({
     currentTab: 'explore'
   },
 
+  
   onLoad() {
     this.initMap()
   },
@@ -231,6 +235,20 @@ Page<PageData, CustomPageMethods>({
 
   onMapTap() {
     console.log('点击了地图空白处')
+  },
+
+  onShowLayers() {
+    // 获取当前状态并取反
+    const nextStatus = !this.data.enableSatellite;
+    
+    this.setData({
+      enableSatellite: nextStatus
+    });
+    // 给个提示让用户知道切过去了
+    wx.showToast({
+      title: nextStatus ? '已切换卫星图' : '已切换标准图',
+      icon: 'none'
+    });
   },
 
   onFilterTap(e: any) {

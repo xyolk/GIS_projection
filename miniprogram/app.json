@@ -8,7 +8,8 @@
     "pages/custom/diner_social/index",
     "pages/custom/diner_collection/index",
     "pages/custom/diner_settings/index",
-    "pages/custom/searching/index"
+    "pages/custom/searching/index",
+    "pages/custom/collection_page/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",

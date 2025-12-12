@@ -1,0 +1,343 @@
+/* pages/custom/collection_page/index.wxss */
+
+/* 全局容器 */
+.page-container {
+  min-height: 100vh;
+  background-color: #f5f5f5; /* bg-gray-100 */
+  padding-bottom: 40rpx;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+    sans-serif;
+}
+
+/* =================================
+   Header Section (头部信息区域)
+   ================================= */
+.header-section {
+  background-color: #ffffff;
+  padding: 32rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05); /* shadow-md */
+}
+
+/* 顶部标题行: 图标 + 标题 + 副标题 */
+.collection-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.icon-box {
+  width: 96rpx;
+  height: 96rpx;
+  background-color: #fff3e0; /* bg-orange-100 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+.info-box {
+  flex: 1;
+}
+
+.title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #374151; /* text-gray-700 */
+  margin-bottom: 8rpx;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #6b7280; /* text-gray-500 */
+  display: flex;
+  align-items: center;
+}
+
+.divider {
+  margin: 0 10rpx;
+  font-weight: bold;
+}
+
+/* 描述文本 */
+.description {
+  font-size: 28rpx;
+  color: #4b5563; /* text-gray-600 */
+  line-height: 1.5;
+  margin-bottom: 32rpx;
+}
+
+/* 按钮行 */
+.action-row {
+  display: flex;
+  align-items: center;
+}
+
+/* 按钮基础样式 */
+.t-button {
+  border-radius: 999rpx !important; 
+  font-weight: 500 !important;      
+}
+
+.t-button::after {
+  display: none !important; /* 暴力隐藏原生小程序的边框伪元素 */
+  border: none !important;
+}
+
+/*  轮廓线  */
+.t-button--variant-outline {
+  --td-button-default-border-color: #d1d5db !important; 
+  
+  background-color: #ffffff !important; 
+}
+
+/* “已关注”按钮 */
+.btn-followed {
+  /* 背景色：浅橙色 */
+  --td-button-primary-bg-color: #fff3e0 !important;
+  /* 文字色：深橙色 */
+  --td-button-primary-color: #ff9800 !important;
+  /* 边框色：深橙色 */
+  --td-button-primary-border-color: #ff9800 !important;
+
+  border: 1rpx solid #ff9800 !important; 
+}
+
+/* =================================
+   List Section (店铺列表区域)
+   ================================= */
+.list-section {
+  background-color: #ffffff;
+  padding-top: 10rpx;
+}
+
+.list-header {
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #f3f4f6; /* divide-gray-100 */
+}
+
+.list-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1f2937; /* text-gray-800 */
+}
+
+.store-list {
+  /* divide-y divide-gray-100 via margin/border on items */
+}
+
+/* Store Card (店铺卡片) */
+.store-card {
+  display: flex;
+  align-items: flex-start; /* 改为 top 对齐以适应长内容 */
+  padding: 32rpx;
+  border-bottom: 1rpx solid #f3f4f6;
+  position: relative;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.store-card:active {
+  background-color: #fafafa;
+}
+
+/* 店铺图片占位块 */
+.store-img {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 24rpx; /* rounded-xl */
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+/* 店铺信息容器 */
+.store-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160rpx;
+}
+
+.row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8rpx;
+}
+
+.store-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1f2937; /* text-gray-800 */
+  line-height: 1.2;
+}
+
+/* 自定义标签颜色样式 */
+.custom-tag-orange { --td-tag-bg-color: #fff3e0; --td-tag-text-color: #e65100; }
+.custom-tag-teal { --td-tag-bg-color: #e0f2f1; --td-tag-text-color: #00695c; }
+.custom-tag-red { --td-tag-bg-color: #ffebee; --td-tag-text-color: #c62828; }
+.custom-tag-blue { --td-tag-bg-color: #e3f2fd; --td-tag-text-color: #1565c0; }
+.custom-tag-purple { --td-tag-bg-color: #f3e5f5; --td-tag-text-color: #6a1b9a; }
+
+.store-loc {
+  font-size: 26rpx;
+  color: #6b7280; /* text-gray-500 */
+  margin-bottom: 16rpx;
+}
+
+/* 底部元数据行 (评分、价格、分类) */
+.row-bottom {
+  display: flex;
+  align-items: center;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  color: #fb8c00; /* text-yellow-500 */
+  margin-right: 24rpx;
+}
+
+.rating-num {
+  font-size: 26rpx;
+  font-weight: 500;
+  margin-left: 4rpx;
+}
+
+.meta-text {
+  font-size: 24rpx;
+  color: #6b7280; /* text-gray-500 */
+  margin-left: 24rpx;
+  position: relative;
+}
+
+/* 收藏按钮 (爱心) */
+.fav-btn {
+  padding: 10rpx;
+  margin-left: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =================================
+   Modal (弹窗样式)
+   ================================= */
+.modal-container {
+  background-color: #fff;
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  padding: 32rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.modal-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.modal-body {
+  margin-bottom: 40rpx;
+}
+
+.modal-desc {
+  font-size: 28rpx;
+  color: #4b5563; /* text-gray-600 */
+  margin-bottom: 24rpx;
+}
+
+/* 收藏夹单选列表项 */
+.collection-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border: 2rpx solid #e5e7eb; /* border-gray-200 */
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  transition: all 0.2s;
+}
+
+/* 选中状态样式 */
+.collection-item.active {
+  border-color: #ff9800;
+  background-color: #fff8e1; /* orange-50 equivalent */
+}
+
+/* 左侧图标容器 */
+.c-icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 24rpx;
+}
+
+/* 图标背景色 */
+.c-bg-orange { background-color: #fff3e0; }
+.c-bg-blue { background-color: #e3f2fd; }
+.c-bg-green { background-color: #e8f5e9; }
+
+/* 中间文字信息 */
+.c-info {
+  flex: 1;
+}
+
+.c-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 4rpx;
+}
+
+.c-count {
+  font-size: 24rpx;
+  color: #9ca3af;
+}
+
+/* 右侧自定义 Radio 样式 (模拟) */
+.c-check {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-circle {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 4rpx solid #d1d5db; /* gray-300 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-circle.checked {
+  border-color: #ff9800;
+}
+
+.check-dot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background-color: #ff9800;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
