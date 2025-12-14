@@ -1,0 +1,85 @@
+/* 页面背景 */
+page {
+  background-color: #fff;
+  font-family: "Songti SC", "SimSun", serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 滚动区域 */
+.scroll-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 输入框 */
+.input-wrapper {
+  padding: 30rpx 40rpx;
+}
+.no-border-textarea {
+  padding: 0 !important;
+  font-size: 32rpx;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* 上传 */
+.upload-wrapper {
+  padding: 0 40rpx 40rpx 40rpx;
+}
+
+/* 分割 */
+.divider-gap {
+  height: 20rpx;
+  background-color: #f9f9f9;
+}
+
+/* 列表图标 */
+.cell-icon-wrapper {
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+}
+.cell-title {
+  font-size: 30rpx;
+  color: #333;
+}
+.cell-title.highlight {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+/* --- 底部固定栏 --- */
+.footer-bar {
+  background: white;
+  padding: 20rpx 40rpx calc(30rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.05);
+  z-index: 99;
+}
+
+/* --- 发布按钮样式 --- */
+.submit-btn {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  color: white !important;
+  font-size: 34rpx !important;
+  font-weight: bold !important;
+  border: none !important;
+  border-radius: 50rpx !important;
+  box-shadow: 0 10rpx 20rpx rgba(245, 124, 0, 0.3) !important;
+}
+.submit-btn::after { border: none !important; }
+.submit-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+.clear-icon-box {
+  padding: 10rpx; /* 增加点击范围 */
+  margin-right: -10rpx; /* 修正因为 padding 导致的视觉偏移 */
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,72 @@
+<view class="container">
+  
+  <view class="header-bar" wx:if="{{list.length > 0}}">
+    <view class="header-title">消息通知</view>
+    <view class="clear-btn" bindtap="onMarkAllRead">
+      <t-icon name="check-double" size="32rpx" />
+      <text>全部已读</text>
+    </view>
+  </view>
+
+  <view class="msg-list" wx:if="{{list.length > 0}}">
+    <block wx:for="{{list}}" wx:key="id">
+      
+      <t-swipe-cell right="{{rightBtn}}">
+        
+        <view 
+          class="msg-card {{!item.isRead ? 'unread' : ''}}" 
+          bindtap="onTapItem"
+          data-id="{{item.id}}"
+          data-targetid="{{item.targetId}}"
+          data-type="{{item.type}}"
+          data-isread="{{item.isRead}}"
+        >
+          <view class="avatar-box">
+             <t-avatar image="{{item.sender.avatar || ''}}" icon="user" size="medium" />
+             <view class="dot" wx:if="{{!item.isRead}}"></view>
+          </view>
+
+          <view class="content-box">
+            <view class="sender-name">{{item.sender.name}}</view>
+            
+            <view class="msg-text">
+              <text wx:if="{{item.type === 'like'}}">
+                <t-icon name="heart-filled" size="28rpx" color="#ff9800" style="display:inline-block; vertical-align:middle; margin-right:4rpx;"/> 赞了你的动态
+              </text>
+              
+              <text wx:elif="{{item.type === 'comment' || item.type === 'reply'}}">{{item.content}}</text>
+              
+              <text wx:else class="system-text">{{item.content}}</text>
+            </view>
+            
+            <view class="time-str">{{item.createTime}}</view>
+          </view>
+
+          <view class="target-box" wx:if="{{item.targetImage}}">
+            <image src="{{item.targetImage}}" mode="aspectFill" class="target-img" />
+          </view>
+          
+          <view class="target-box" wx:else>
+             <t-icon name="chevron-right" size="40rpx" color="#ccc" />
+          </view>
+
+        </view>
+
+        <view slot="right" class="swipe-btn delete-btn" catchtap="onDeleteItem" data-id="{{item.id}}">
+          删除
+        </view>
+      </t-swipe-cell>
+      
+    </block>
+    
+    <t-loading theme="circular" size="40rpx" text="加载中..." loading="{{isLoading}}" class="loading-more" />
+    <view wx:if="{{!hasMore && !isLoading}}" class="no-more">没有更多消息了</view>
+
+  </view>
+
+  <view class="empty-state" wx:if="{{!isLoading && list.length === 0}}">
+    <t-icon name="notification" size="96rpx" color="#e0e0e0" />
+    <view class="empty-text">暂无新消息</view>
+  </view>
+
+</view>

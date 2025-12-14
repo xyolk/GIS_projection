@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "导航记录",
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
+    "t-loading": "tdesign-miniprogram/loading/loading"
+  }
+}

@@ -1,0 +1,174 @@
+/* 页面基础 */
+page {
+  background-color: #f9f9f9;
+  font-family: "Songti SC", "SimSun", serif;
+}
+.page-container {
+  padding-bottom: 60rpx;
+}
+
+/* 1. 顶部信息 */
+.header-section {
+  background: white;
+  padding: 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+.user-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+}
+.user-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 2. 图表区域 (核心修复) */
+.chart-wrapper {
+  background: white;
+  /* 增加上下内边距，防止标签被遮挡 */
+  padding: 60rpx 0; 
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20rpx;
+  /* 关键：允许内容溢出，防止文字标签被切掉 */
+  overflow: visible; 
+}
+
+.radar-container {
+  /* 缩小尺寸，给文字留出空间 */
+  width: 480rpx;
+  height: 480rpx;
+  position: relative; /* 用于标签定位 */
+  margin: 0 auto;
+}
+
+.radar-canvas {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 维度标签定位 (配合 480rpx 容器调整) */
+.label-text {
+  position: absolute;
+  font-size: 24rpx;
+  color: #666; /* 标签文字灰色 */
+  font-weight: bold;
+  background: rgba(255,255,255,0.95); /* 背景稍微不透明一点，防遮挡 */
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
+  z-index: 2;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  white-space: nowrap; /* 防止文字换行 */
+}
+
+/* 具体的方位调整 (重新计算偏移量，防止遮挡) */
+/* 上 */
+.pos-top { 
+  top: -50rpx; 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+/* 右上 */
+.pos-top-right { 
+  top: 40rpx; 
+  right: -60rpx; 
+}
+/* 右下 */
+.pos-bottom-right { 
+  bottom: 40rpx; 
+  right: -60rpx; 
+}
+/* 下 */
+.pos-bottom { 
+  bottom: -50rpx; 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+/* 左下 */
+.pos-bottom-left { 
+  bottom: 40rpx; 
+  left: -60rpx; 
+}
+/* 左上 */
+.pos-top-left { 
+  top: 40rpx; 
+  left: -60rpx; 
+}
+
+/* 3. 数据网格 */
+.data-grid {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+.data-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.data-val {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 6rpx;
+  /* 强制统一为黑色，覆盖行内样式 */
+  color: #333 !important; 
+}
+.data-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.divider { height: 20rpx; }
+
+/* 4. 隐私设置 (颜色修正) */
+.privacy-group {
+  /* TDesign 变量覆盖：将选中颜色改为主题橙 */
+  --td-radio-icon-checked-color: #ff9800 !important;
+  --td-radio-icon-color: #dcdcdc !important;
+}
+
+/* 5. 底部按钮 (完全复刻发布页风格) */
+.footer-area {
+  padding: 40rpx 40rpx;
+  background-color: transparent;
+}
+
+/* 保存按钮样式升级 */
+.save-btn {
+  /* 1. 渐变背景 */
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  
+  /* 2. 字体 */
+  color: white !important;
+  font-size: 34rpx !important;
+  font-weight: bold !important;
+  
+  /* 3. 去除边框 */
+  border: none !important;
+  
+  /* 4. 形状与阴影 */
+  border-radius: 50rpx !important;
+  box-shadow: 0 10rpx 20rpx rgba(245, 124, 0, 0.3) !important;
+}
+
+/* 彻底去除小程序按钮自带的边框 */
+.save-btn::after {
+  border: none !important;
+}
+
+/* 点击反馈 */
+.save-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}

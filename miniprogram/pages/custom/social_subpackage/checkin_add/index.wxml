@@ -1,0 +1,113 @@
+<view class="page-container">
+
+<view class="checkin-card" wx:if="{{currentShop}}">
+
+  <view class="card-header">
+    <view class="header-left">
+      <t-icon name="location-1" size="40rpx" color="#ff9800" />
+      <text class="header-title">猜你在这里</text>
+    </view>
+    <view class="header-change" bindtap="onChangeShop">
+      <text>切换店铺</text>
+      <t-icon name="chevron-right" size="32rpx" />
+    </view>
+  </view>
+
+  <view class="shop-info">
+    <view class="shop-name">{{currentShop.name}}</view>
+    <view class="shop-meta">
+      <text class="meta-tag">{{currentShop.category}}</text>
+      <text class="meta-count">这是你第 {{currentShop.visitCount + 1}} 次光顾</text>
+    </view>
+  </view>
+
+  <view class="action-dock">
+    <view class="mood-dock">
+      <text class="dock-label">此时心情</text>
+      <view class="mood-grid">
+        <block wx:for="{{moodTags}}" wx:key="text">
+          <t-check-tag 
+            class="mood-tag" 
+            checked="{{item.checked}}" 
+            content="{{item.text}}" 
+            bind:change="onTagChange" 
+            data-index="{{index}}" 
+          />
+        </block>
+      </view>
+    </view>
+
+    <view class="photo-dock">
+      <text class="dock-label">留张照片</text>
+
+      <t-upload 
+        mediaType="{{['image']}}" 
+        max="{{1}}" 
+        files="{{fileList}}" 
+        bind:add="handleAdd" 
+        bind:remove="handleRemove" 
+        class="wechat-upload-container"
+      >
+        <view slot="addContent" class="custom-add-btn">
+          <t-icon name="add" size="56rpx" color="#ff9800" class="add-icon" />
+        </view>
+      </t-upload>
+
+    </view>
+  </view>
+
+  <t-button 
+    t-class="checkin-btn" 
+    block 
+    shape="round" 
+    bindtap="doCheckIn"
+  >确认打卡</t-button>
+
+</view>
+
+<view class="history-container">
+  <view class="history-title">
+    <text>我的足迹</text>
+    <text class="history-stats">累计 {{historyList.length}} 站</text>
+  </view>
+
+  <view class="timeline">
+    <block wx:for="{{historyList}}" wx:key="id">
+      <view class="timeline-item">
+
+        <view class="time-col">
+          <text class="date-text">{{item.dateStr}}</text>
+          <text class="time-text">{{item.timeStr}}</text>
+        </view>
+
+        <view class="line-col">
+          <view class="dot {{index === 0 ? 'active' : ''}}"></view>
+          <view class="line" wx:if="{{index !== historyList.length - 1}}"></view>
+        </view>
+
+        <view class="content-col">
+          <view class="record-card">
+            <view class="record-header">
+              <text class="record-shop">{{item.shopName}}</text>
+              <t-tag size="small" variant="light" theme="warning">{{item.mood}}</t-tag>
+            </view>
+
+            <view class="record-body" wx:if="{{item.imageUrl}}">
+              <image 
+                class="record-thumb" 
+                src="{{item.imageUrl}}" 
+                mode="aspectFill" 
+                catchtap="onPreviewImage" 
+                data-url="{{item.imageUrl}}" 
+              />
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </block>
+  </view>
+
+  <view style="height: 60rpx;"></view>
+</view>
+</view>

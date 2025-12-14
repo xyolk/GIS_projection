@@ -13,43 +13,50 @@
 
     <view class="profile-card">
       <view class="profile-layout">
-        <view class="avatar-wrapper">
-          <t-icon name="user" size="60rpx" color="#ff9800" />
-        </view>
+        <button 
+          class="avatar-wrapper" 
+          open-type="chooseAvatar" 
+          bind:chooseavatar="onChooseAvatar" 
+          hover-class="none"
+        >
+          <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+          <t-icon wx:else name="user" size="60rpx" color="#ff9800" />
+        </button>
+
         <view class="profile-info">
           <view class="name-row">
-            <text class="user-name">美食爱好者</text>
+            <text class="user-name">{{userInfo.nickName}}</text>
             <view class="level-tag">Lv.8</view>
           </view>
           <view class="location-row">
             <t-icon name="location" size="28rpx" color="rgba(255,255,255,0.9)" />
-            <text class="location-text">南京市 - 秦淮区</text>
+            <text class="location-text">{{userInfo.region[1]}} - {{userInfo.region[2]}}</text>
+          </view>
+          <view class="location-row" wx:if="{{userInfo.signature}}" style="margin-top:8rpx;">
+             <text style="font-size: 22rpx; opacity: 0.8;">{{userInfo.signature}}</text>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="function-grid">
-      <view class="grid-row">
-        <view class="grid-item">
-          <view class="icon-circle bg-orange"><t-icon name="chat" size="40rpx" color="#ff9800" /></view>
-          <text class="grid-text">新增评语</text>
+<view class="function-grid">
+  <view class="grid-row">
+    
+    <block wx:for="{{gridConfig}}" wx:key="id">
+      <view 
+        class="grid-item" 
+        bindtap="onGridTap" 
+        data-path="{{item.path}}"
+      >
+        <view class="icon-circle {{item.bgClass}}">
+          <t-icon name="{{item.icon}}" size="40rpx" color="{{item.iconColor}}" />
         </view>
-        <view class="grid-item">
-          <view class="icon-circle bg-blue"><t-icon name="camera" size="40rpx" color="#2196f3" /></view>
-          <text class="grid-text">新增照片</text>
-        </view>
-        <view class="grid-item">
-          <view class="icon-circle bg-green"><t-icon name="location" size="40rpx" color="#4caf50" /></view>
-          <text class="grid-text">打卡</text>
-        </view>
-        <view class="grid-item">
-          <view class="icon-circle bg-purple"><t-icon name="chart-bar" size="40rpx" color="#9c27b0" /></view>
-          <text class="grid-text">个人画像</text>
-        </view>
+        <text class="grid-text">{{item.text}}</text>
       </view>
-      <button class="edit-btn">编辑资料</button>
-    </view>
+    </block>
+  </view>
+  <button class="edit-btn" bindtap="openEditModal">编辑资料</button>
+</view>
 
     <view class="section-card">
       <view class="section-header">
@@ -60,107 +67,102 @@
         </view>
       </view>
       <view class="recent-grid">
-        <view class="recent-item">
-          <view class="recent-img bg-orange-light"></view>
-          <text class="recent-name">南京大牌档</text>
-          <view class="recent-rating">
-            <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
-            <text>4.8</text>
+        <block wx:for="{{recentList}}" wx:key="id">
+          <view class="recent-item">
+            <view class="recent-img {{item.imageClass}}"></view>
+            <text class="recent-name">{{item.name}}</text>
+            <view class="recent-rating">
+              <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
+              <text>{{item.rating}}</text>
+            </view>
           </view>
-        </view>
-        <view class="recent-item">
-          <view class="recent-img bg-teal-light"></view>
-          <text class="recent-name">小厨娘淮扬菜</text>
-          <view class="recent-rating">
-            <t-icon name="star-filled" size="24rpx" color="#fbbf24" />
-            <text>4.6</text>
-          </view>
-        </view>
+        </block>
       </view>
     </view>
 
     <view class="section-card">
       <view class="section-title mb-3">个人口味分析</view>
       <view class="progress-list">
-        <view class="progress-item">
-          <view class="progress-label">
-            <text>咸度偏好</text>
-            <text class="progress-val">70%</text>
+        <block wx:for="{{tasteData}}" wx:key="id">
+          <view class="progress-item">
+            <view class="progress-label">
+              <text>{{item.label}}</text>
+              <text class="progress-val">{{item.value}}%</text>
+            </view>
+            <view class="progress-track">
+              <view class="progress-bar" style="width: {{item.value + '%'}}; background-color: {{item.color}};"></view>
+            </view>
           </view>
-          <view class="progress-track">
-            <view class="progress-bar" style="width: 70%;"></view>
-          </view>
-        </view>
-        <view class="progress-item">
-          <view class="progress-label">
-            <text>甜度偏好</text>
-            <text class="progress-val">50%</text>
-          </view>
-          <view class="progress-track">
-            <view class="progress-bar" style="width: 50%;"></view>
-          </view>
-        </view>
-        <view class="progress-item">
-          <view class="progress-label">
-            <text>辣度偏好</text>
-            <text class="progress-val">30%</text>
-          </view>
-          <view class="progress-track">
-            <view class="progress-bar" style="width: 30%;"></view>
-          </view>
-        </view>
+        </block>
       </view>
     </view>
 
     <view class="section-card no-padding">
       <view class="card-header-border">我的动态</view>
       <view class="feed-content">
-        <view class="feed-row">
-          <view class="feed-avatar">
-            <t-icon name="user" size="40rpx" color="#ff9800" />
-          </view>
-          <view class="feed-main">
-            <view class="feed-user">美食爱好者</view>
-            <view class="feed-text">今天在南京大牌档享用了美味的盐水鸭，口感绝佳！</view>
-            <view class="feed-images">
-              <view class="feed-img bg-orange-light"></view>
-              <view class="feed-img bg-yellow-light"></view>
-              <view class="feed-img bg-red-light"></view>
+        <block wx:for="{{feedList}}" wx:key="id">
+          <view class="feed-row" bindtap="onTapFeed" data-id="{{item.id}}" hover-class="feed-hover">
+            
+            <view class="feed-avatar">
+              <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" style="width:100%;height:100%;border-radius:50%;" mode="aspectFill" />
+              <t-icon wx:else name="user" size="40rpx" color="#ff9800" />
             </view>
-            <view class="feed-footer">
-              <text>2小时前</text>
-              <view class="feed-stats">
-                <text>32赞</text>
-                <text class="ml-2">8评论</text>
+            <view class="feed-main">
+              <view class="feed-user">{{userInfo.nickName}}</view>
+              <view class="feed-text">{{item.content}}</view>
+            
+              <view class="feed-images">
+                <block wx:for="{{item.images}}" wx:for-item="img" wx:key="*this">
+                  <view class="feed-img {{img}}" catchtap="onPreviewImage" data-src="{{img}}"></view>
+                </block>
+              </view>
+
+              <view class="feed-footer">
+                <text>{{item.time}}</text>
+                <view class="feed-stats">
+                  <text>{{item.likes}}赞</text>
+                  <text class="ml-2">{{item.comments}}评论</text>
+                </view>
               </view>
             </view>
+
           </view>
+        </block>
+        
+        <view wx:if="{{feedList.length === 0}}" style="text-align:center; color:#999; padding:20rpx;">
+          暂无动态
         </view>
+
       </view>
     </view>
 
     <view class="menu-list">
-      <view class="menu-item">
+      
+      <view class="menu-item" bindtap="onGridTap" data-path="/pages/custom/social_subpackage/message_notice/index">
         <view class="menu-left">
           <t-icon name="notification" size="40rpx" color="#ff9800" />
           <text class="menu-text">消息通知</text>
+          <view class="menu-dot" wx:if="{{unreadCount > 0}}"></view>
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#ccc" />
       </view>
-      <view class="menu-item">
+
+      <view class="menu-item" bindtap="onGridTap" data-path="/pages/custom/social_subpackage/reservation_record/index">
         <view class="menu-left">
           <t-icon name="calendar" size="40rpx" color="#2196f3" />
           <text class="menu-text">预定记录</text>
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#ccc" />
       </view>
-      <view class="menu-item">
+
+      <view class="menu-item" bindtap="onGridTap" data-path="/pages/custom/social_subpackage/navigation_record/index">
         <view class="menu-left">
           <t-icon name="location" size="40rpx" color="#4caf50" />
           <text class="menu-text">导航记录</text>
         </view>
         <t-icon name="chevron-right" size="40rpx" color="#ccc" />
       </view>
+
     </view>
 
     <view style="height: 140rpx;"></view>
@@ -182,6 +184,59 @@
     <view class="tab-item" bindtap="switchTab" data-tab="settings">
       <t-icon name="setting" size="48rpx" />
       <text class="tab-text">设置</text>
+    </view>
+  </view>
+
+  <view 
+    class="modal-mask {{showEditModal ? 'show' : ''}}" 
+    bindtap="closeEditModal"
+    catchtouchmove="preventScroll"
+  ></view>
+
+  <view class="modal-panel {{showEditModal ? 'show' : ''}}" catchtouchmove="preventScroll">
+    <view class="modal-header">
+      <text class="modal-title">编辑个人资料</text>
+      <t-icon name="close" size="48rpx" bindtap="closeEditModal" color="#999" />
+    </view>
+
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="form-label">昵称</text>
+        <input 
+          class="form-input" 
+          type="nickname" 
+          placeholder="请输入昵称" 
+          value="{{tempUserInfo.nickName}}"
+          bindchange="onNickNameChange"
+          bindblur="onNickNameChange"
+        />
+      </view>
+
+      <picker mode="region" bindchange="onRegionChange" value="{{tempUserInfo.region}}">
+        <view class="form-item">
+          <text class="form-label">所在地</text>
+          <view class="form-picker">
+            <text wx:if="{{tempUserInfo.region.length}}">{{tempUserInfo.region[0]}} - {{tempUserInfo.region[1]}} - {{tempUserInfo.region[2]}}</text>
+            <text wx:else class="placeholder-text">请选择所在地</text>
+            <t-icon name="chevron-right" size="32rpx" color="#ccc" />
+          </view>
+        </view>
+      </picker>
+
+      <view class="form-item">
+        <text class="form-label">个性签名</text>
+        <input 
+          class="form-input" 
+          placeholder="一句话介绍自己" 
+          value="{{tempUserInfo.signature}}"
+          bindinput="onSignatureInput"
+          maxlength="20"
+        />
+      </view>
+    </view>
+
+    <view class="modal-footer">
+      <button class="save-btn" bindtap="saveProfile">保存修改</button>
     </view>
   </view>
 </view>

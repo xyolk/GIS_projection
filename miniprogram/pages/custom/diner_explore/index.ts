@@ -1,5 +1,6 @@
 // pages/custom/diner_explore/index.ts
 import { config } from '../../../config' // 高德地图api确保路径正确
+import { navigateToShopDetail } from '../../../utils/router' // 推荐卡片跳转方法
 
 const app = getApp<IAppOption>()
 const db = wx.cloud.database()
@@ -26,6 +27,9 @@ interface CustomPageMethods {
   getRestaurantsFromCloud(userLat: number, userLng: number): void;
   updateMarkers(): void;
   calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): string;
+  onShopCardTap(e: any): void; // 用于列表卡片点击跳转
+  onPopupCardTap(): void;      // 用于悬浮卡片点击跳转
+  onNotificationTap(): void;   // 用于跳转消息界面
   onMarkerTap(e: any): void;
   onMapTap(): void;
   onFilterTap(e: any): void;
@@ -47,7 +51,9 @@ interface PageData {
   filters: Array<{ name: string, active: boolean }>;
   currentTab: string;
   enableSatellite: boolean;
+  currentShop: Restaurant | null; //  新增：当前选中的店铺
 }
+
 
 // 使用泛型 Page<PageData, CustomPageMethods> 彻底解决属性不存在的报错
 Page<PageData, CustomPageMethods>({
@@ -58,6 +64,7 @@ Page<PageData, CustomPageMethods>({
     enableSatellite: false,
     markers: [],
     restaurants: [],
+    currentShop: null,
     
     filters: [
       { name: '全部', active: true },
@@ -196,10 +203,10 @@ Page<PageData, CustomPageMethods>({
   },
 
   updateMarkers() {
-    const markers = this.data.restaurants.map((item) => {
+    const markers = this.data.restaurants.map((item, index) => {
       return {
         // 优先使用云数据库的 _id，如果没有则用 id
-        id: item._id || item.id || 0, 
+        id: index, 
         latitude: item.latitude,
         longitude: item.longitude,
         width: 30,
@@ -219,23 +226,47 @@ Page<PageData, CustomPageMethods>({
   },
 
   onMarkerTap(e: any) {
-    const restaurantId = e.markerId
-    // 注意：云数据库 ID 可能是 string，而 markerId 有时是 number，使用 == 进行弱类型比较更安全
-    const restaurant = this.data.restaurants.find(r => r.id == restaurantId || r._id == restaurantId)
+    const index = e.markerId;
+    // 直接通过下标获取数据
+    const restaurant = this.data.restaurants[index];
     
     if (restaurant) {
-      console.log('选中了:', restaurant.name)
-      wx.showModal({
-        title: restaurant.name,
-        content: `评分：${restaurant.rating} | 距您 ${restaurant.distance}`,
-        showCancel: false
-      })
+      console.log('选中店铺:', restaurant.name);
+      this.setData({
+        currentShop: restaurant
+      });
+    }
+  },
+
+
+  // 列表里的卡片点击
+  onShopCardTap(e: any) {
+    const id = e.currentTarget.dataset.id;
+    if (id) {
+      console.log('点击列表卡片跳转:', id);
+      navigateToShopDetail(id); // <--- 新增：调用跳转
     }
   },
 
   onMapTap() {
-    console.log('点击了地图空白处')
+    if (this.data.currentShop) {
+      console.log('点击地图空白，关闭卡片');
+      this.setData({
+        currentShop: null
+      });
+    }
   },
+
+  // 地图悬浮卡片点击 (直接取 currentShop)
+  onPopupCardTap() {
+    const shop = this.data.currentShop;
+    if (shop) {
+      console.log('悬浮卡片跳转:', shop.name);
+      // 优先用 _id (云开发ID)，没有则用 id
+      navigateToShopDetail(shop._id || shop.id);
+    }
+  },
+
 
   onShowLayers() {
     // 获取当前状态并取反
@@ -248,6 +279,17 @@ Page<PageData, CustomPageMethods>({
     wx.showToast({
       title: nextStatus ? '已切换卫星图' : '已切换标准图',
       icon: 'none'
+    });
+  },
+
+  // --- 新增：点击通知图标跳转 ---
+  onNotificationTap() {
+    wx.navigateTo({
+      url: '/pages/custom/social_subpackage/message_notice/index',
+      fail: (err) => {
+        console.error('跳转消息中心失败:', err);
+        wx.showToast({ title: '跳转失败', icon: 'none' });
+      }
     });
   },
 

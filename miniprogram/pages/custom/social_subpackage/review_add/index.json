@@ -1,0 +1,15 @@
+{
+  "navigationBarTitleText": "写评语",
+  "navigationStyle": "custom", 
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-rate": "tdesign-miniprogram/rate/rate",
+    "t-textarea": "tdesign-miniprogram/textarea/textarea",
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-cell": "tdesign-miniprogram/cell/cell",
+    "t-cell-group": "tdesign-miniprogram/cell-group/cell-group",
+    "t-search": "tdesign-miniprogram/search/search",
+    "t-check-tag": "tdesign-miniprogram/check-tag/check-tag"
+  }
+}

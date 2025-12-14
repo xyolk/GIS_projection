@@ -1,0 +1,14 @@
+{
+  "navigationBarTitleText": "快速打卡",
+  "navigationStyle": "default",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-tag": "tdesign-miniprogram/tag/tag",
+    "t-check-tag": "tdesign-miniprogram/check-tag/check-tag",
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar"
+  }
+}

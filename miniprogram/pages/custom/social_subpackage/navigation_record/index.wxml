@@ -1,0 +1,63 @@
+<view class="container">
+
+<view class="nav-list" wx:if="{{list.length > 0}}">
+  <block wx:for="{{list}}" wx:key="id">
+    
+    <t-swipe-cell right="{{rightBtn}}">
+      <view class="nav-card">
+        
+        <view class="card-header">
+          <view class="time-tag">
+            <t-icon name="time" size="28rpx" color="#999" />
+            <text>{{item.createTime}}</text>
+          </view>
+          <view class="transport-badge">
+            <t-icon name="location" size="28rpx" color="#ff9800" wx:if="{{item.transportType === 'driving'}}" /> 
+            <text>{{textMap[item.transportType]}}</text>
+          </view>
+        </view>
+
+        <view class="divider-dashed"></view>
+
+        <view class="route-body" bindtap="onReNavigate" data-item="{{item}}">
+          
+          <view class="route-axis">
+            <view class="dot start"></view>
+            <view class="line"></view>
+            <view class="dot end"></view>
+          </view>
+
+          <view class="route-info">
+            <view class="location-row from">
+              <text class="loc-name">{{item.fromName}}</text>
+            </view>
+            <view class="location-row to">
+              <text class="loc-name highlight">{{item.toName}}</text>
+              <text class="loc-addr">{{item.toAddress}}</text>
+            </view>
+          </view>
+          
+          <view class="arrow-area">
+            <view class="distance-tag" wx:if="{{item.distance}}">{{item.distance}}</view>
+            <t-icon name="navigation-arrow" size="48rpx" color="#ff9800" />
+          </view>
+
+        </view>
+
+      </view>
+
+      <view slot="right" class="swipe-btn delete-btn" catchtap="onDeleteItem" data-id="{{item.id}}">
+        删除
+      </view>
+    </t-swipe-cell>
+
+  </block>
+  <view class="footer-tip">记录只保留最近 90 天</view>
+</view>
+
+<view class="empty-state" wx:if="{{!isLoading && list.length === 0}}">
+  <t-icon name="location" size="96rpx" color="#e0e0e0" />
+  <view class="empty-text">暂无导航记录</view>
+</view>
+
+</view>

@@ -1,0 +1,67 @@
+<view class="page-container">
+  
+  <view class="header-section">
+    <t-avatar 
+      image="{{userInfo.avatarUrl}}" 
+      icon="user" 
+      size="large" 
+      style="margin-bottom: 20rpx;" 
+    />
+    <view class="user-name">
+      {{userInfo.nickName}}
+      <t-tag size="small" theme="warning" variant="light">Lv.{{userInfo.level}}</t-tag>
+    </view>
+    <view class="user-desc">这是您的味蕾 DNA，基于最近 30 天的探店记录生成</view>
+  </view>
+
+  <view class="chart-wrapper">
+    <view class="radar-container">
+      
+      <canvas type="2d" id="radarCanvas" class="radar-canvas"></canvas>
+
+      <view class="label-text pos-top">{{tasteData[0].label}} {{tasteData[0].value}}</view>
+      <view class="label-text pos-top-right">{{tasteData[1].label}}</view>
+      <view class="label-text pos-bottom-right">{{tasteData[2].label}}</view>
+      <view class="label-text pos-bottom">{{tasteData[3].label}} {{tasteData[3].value}}</view>
+      <view class="label-text pos-bottom-left">{{tasteData[4].label}}</view>
+      <view class="label-text pos-top-left">{{tasteData[5].label}}</view>
+    </view>
+  </view>
+
+  <view class="data-grid">
+    <block wx:for="{{tasteData}}" wx:key="label">
+      <view class="data-item">
+        <view class="data-val" style="color: {{item.color}}">{{item.value}}</view>
+        <view class="data-label">{{item.label}}</view>
+      </view>
+    </block>
+  </view>
+
+  <view class="divider"></view>
+
+  <t-cell-group theme="card" title="隐私设置">
+    <t-radio-group class="privacy-group" value="{{privacyValue}}" bind:change="onPrivacyChange">
+      <t-cell title="公开" description="所有人可见您的口味画像">
+        <t-radio slot="right-icon" value="public" color="#ff9800" />
+      </t-cell>
+      <t-cell title="仅粉丝可见" description="互相关注的好友可见">
+        <t-radio slot="right-icon" value="fans" color="#ff9800" />
+      </t-cell>
+      <t-cell title="私密" description="仅自己可见">
+        <t-radio slot="right-icon" value="private" color="#ff9800" />
+      </t-cell>
+    </t-radio-group>
+  </t-cell-group>
+
+  <view class="footer-area">
+    <t-button 
+      t-class="save-btn" 
+      theme="primary" 
+      block 
+      size="large" 
+      shape="round" 
+      bindtap="onSaveImage"
+    >保存画像到相册</t-button>
+  </view>
+
+</view>

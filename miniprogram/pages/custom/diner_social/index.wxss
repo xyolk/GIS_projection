@@ -84,8 +84,29 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 6rpx solid rgba(255,255,255,0.4); 
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
+
+ /* 边框与阴影 */
+  border: 4rpx solid #ffffff; 
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+
+  /* 新增：清除 button 默认样式的代码 */
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: normal !important;
+  box-sizing: content-box !important;
+}
+
+/* 去除 button 自带的边框伪类 */
+.avatar-wrapper::after {
+  border: none;
+}
+
+/* 新增：头像图片的样式 */
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block; /* 防止图片底部留白 */
 }
 
 .profile-info {
@@ -377,4 +398,105 @@ page {
 .tab-text {
   font-size: 20rpx;
   margin-top: 6rpx;
+}
+
+
+/* =========================== */
+/* 编辑资料弹窗样式       */
+/* =========================== */
+
+/* 1. 黑色半透明蒙层 */
+.modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 900; /* 确保盖住页面内容 */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s;
+}
+.modal-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 2. 底部白色面板 */
+.modal-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-radius: 32rpx 32rpx 0 0; /* 上方圆角 */
+  padding: 40rpx 40rpx calc(40rpx + env(safe-area-inset-bottom)); /* 适配底部安全区 */
+  z-index: 999; /* 最高层级 */
+  
+  /* 动画效果 */
+  transform: translateY(100%); /* 默认藏在屏幕下面 */
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.modal-panel.show {
+  transform: translateY(0); /* 滑上来 */
+}
+
+/* 3. 弹窗内部布局 */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 表单项 */
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.form-label {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+/* 输入框通用样式 */
+.form-input, .form-picker {
+  height: 88rpx;
+  background: #f5f5f5; /* 浅灰底色 */
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 30rpx;
+  color: #333;
+  display: flex;
+  align-items: center; /* 让文字垂直居中 */
+}
+
+/* Picker 特有样式 */
+.form-picker {
+  justify-content: space-between;
+}
+.placeholder-text {
+  color: #999;
+}
+
+/* 保存按钮 */
+.save-btn {
+  background: linear-gradient(90deg, #ff9800, #f57c00);
+  color: white;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-top: 40rpx;
+  border: none;
+}
+/* 去除按钮默认边框 */
+.save-btn::after { border: none; }
+
+.feed-hover {
+  background-color: #f9f9f9; 
+  transition: background-color 0.2s;
 }

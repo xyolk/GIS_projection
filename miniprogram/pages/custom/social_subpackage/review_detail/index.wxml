@@ -1,0 +1,97 @@
+<view class="container" wx:if="{{!isLoading && detail}}" bindtap="onResetReply">
+  
+  <scroll-view scroll-y class="main-scroll">
+    <view class="content-wrapper">
+      
+      <view class="post-layout">
+        <t-avatar image="{{detail.author.avatar}}" size="medium" class="avatar-left" />
+        
+        <view class="post-right">
+          <view class="author-name">{{detail.author.name}}</view>
+          
+          <view class="post-text">{{detail.content}}</view>
+          
+          <view class="image-grid" wx:if="{{detail.images.length}}">
+            <t-image 
+              wx:for="{{detail.images}}" 
+              wx:key="*this" 
+              src="{{item}}" 
+              mode="aspectFill" 
+              class="post-img {{detail.images.length === 1 ? 'single' : ''}}"
+              catchtap="onPreviewImage"
+              data-current="{{item}}"
+            />
+          </view>
+
+          <view class="post-meta">
+            <view class="time">{{detail.createTime}}</view>
+          </view>
+
+          <view class="moments-box">
+            <view class="arrow-up"></view>
+            
+            <view class="likes-section" wx:if="{{detail.likes.length}}">
+              <t-icon name="heart-filled" size="28rpx" color="#ff9800" class="like-icon-small" />
+              <view class="likes-list">
+                <block wx:for="{{detail.likes}}" wx:key="id">
+                  <text class="user-link">{{item.name}}</text>
+                  <text wx:if="{{index < detail.likes.length - 1}}">, </text>
+                </block>
+              </view>
+            </view>
+
+            <view class="divider-line" wx:if="{{detail.likes.length && detail.comments.length}}"></view>
+
+            <view class="comments-section" wx:if="{{detail.comments.length}}">
+              <view 
+                class="comment-row" 
+                wx:for="{{detail.comments}}" 
+                wx:key="id"
+                catchtap="onTapComment"
+                data-user="{{item.user}}"
+              >
+                <text class="user-link">{{item.user.name}}</text>
+                <block wx:if="{{item.replyTo}}">
+                  <text class="text-normal"> 回复 </text>
+                  <text class="user-link">{{item.replyTo.name}}</text>
+                </block>
+                <text class="text-normal">: {{item.content}}</text>
+              </view>
+            </view>
+          </view> 
+
+        </view>
+      </view>
+    </view>
+    
+    <view style="height: 120rpx;"></view>
+  </scroll-view>
+
+  <view class="footer-input-bar" catchtap> 
+    <view class="input-wrap">
+      <input 
+        class="wechat-input" 
+        placeholder="{{placeholder}}" 
+        placeholder-class="ph-style"
+        value="{{inputValue}}" 
+        bindinput="onInput" 
+        confirm-type="send"
+        bindconfirm="onSend"
+        cursor-spacing="20"
+      />
+    </view>
+    
+    <t-button 
+      t-class="orange-btn"
+      theme="primary" 
+      size="small" 
+      disabled="{{!inputValue}}" 
+      bindtap="onSend"
+    >发送</t-button>
+  </view>
+
+</view>
+
+<view wx:else class="loading-full">
+  <t-loading theme="circular" size="40rpx" text="加载中..." />
+</view>

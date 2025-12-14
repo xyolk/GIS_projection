@@ -1,0 +1,114 @@
+<view class="page-container">
+  
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-content">
+      <view class="back-btn" bindtap="goBack">
+        <t-icon name="chevron-left" size="48rpx" color="#333" />
+      </view>
+      <text class="nav-title">新增评语</text>
+      <view class="nav-placeholder"></view> </view>
+  </view>
+
+  <view style="height: {{statusBarHeight + 44}}px;"></view>
+
+  <scroll-view scroll-y class="scroll-content">
+    
+    <view class="section-card">
+      <view class="section-title">评价对象</view>
+      
+      <block wx:if="{{!selectedShop}}">
+        <t-search placeholder="搜索店铺名称" shape="round" />
+        
+        <view class="suggestion-box">
+          <text class="sub-label">最近光顾/浏览</text>
+          <view class="shop-list">
+            <block wx:for="{{recentShops}}" wx:key="id">
+              <view class="shop-item-mini" bindtap="selectShop" data-shop="{{item}}">
+                <view class="shop-img {{item.img}}"></view>
+                <view class="shop-info">
+                  <text class="shop-name">{{item.name}}</text>
+                  <text class="shop-dist">距您 {{item.distance}}</text>
+                </view>
+                <t-icon name="add-circle" size="40rpx" color="#ff9800" />
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+
+      <view wx:else class="selected-shop-card">
+        <view class="shop-img-lg {{selectedShop.img}}"></view>
+        <view class="shop-main">
+          <text class="shop-name-lg">{{selectedShop.name}}</text>
+          <text class="shop-sub">人均 ¥88 | 淮扬菜</text>
+        </view>
+        <view class="close-btn" bindtap="removeShop">
+          <t-icon name="close" size="36rpx" color="#999" />
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="rating-row">
+        <text class="rating-label">总体评分</text>
+        <t-rate 
+          value="{{rateValue}}" 
+          bind:change="onRateChange" 
+          size="56rpx"
+          gap="12"
+          color="{{['#ff9800', '#ddd']}}" 
+          icon="{{['heart-filled', 'heart']}}"
+        />
+        <text class="rating-text" wx:if="{{rateValue > 0}}">{{rateValue}}.0 分</text>
+      </view>
+
+      <view class="tags-container">
+        <block wx:for="{{tags}}" wx:key="text">
+          <t-check-tag 
+            class="custom-tag"
+            checked="{{item.checked}}" 
+            content="{{item.text}}" 
+            variant="light-outline"
+            bind:change="onTagChange" 
+            data-index="{{index}}"
+          />
+        </block>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <t-textarea 
+        t-class="custom-textarea"
+        placeholder="菜品口味如何？环境怎么样？服务周到吗？(写够15字有机会获得优质评价奖励)" 
+        maxlength="500" 
+        indicator
+        disableDefaultPadding="{{true}}"
+        bind:change="onInputChange"
+      />
+      
+      <view class="upload-box">
+        <t-upload
+          mediaType="{{['image']}}"
+          max="{{9}}"
+          files="{{fileList}}"
+          bind:add="handleAdd"
+          bind:remove="handleRemove"
+        />
+      </view>
+    </view>
+
+    <view style="height: 180rpx;"></view>
+  </scroll-view>
+
+  <view class="footer-bar">
+    <t-button 
+      theme="primary" 
+      size="large" 
+      block 
+      shape="round"
+      bindtap="submitReview"
+      t-class="submit-btn"
+    >发布评价</t-button>
+  </view>
+
+</view>

@@ -9,7 +9,16 @@
     "pages/custom/diner_collection/index",
     "pages/custom/diner_settings/index",
     "pages/custom/searching/index",
-    "pages/custom/collection_page/index"
+    "pages/custom/collection_page/index",
+    "pages/custom/social_subpackage/review_add/index",
+    "pages/custom/social_subpackage/photo_add/index",
+    "pages/custom/social_subpackage/individual_chart/index",
+    "pages/custom/social_subpackage/checkin_add/index",
+    "pages/custom/restaurant_detail/index",
+    "pages/custom/social_subpackage/review_detail/index",
+    "pages/custom/social_subpackage/message_notice/index",
+    "pages/custom/social_subpackage/reservation_record/index",
+    "pages/custom/social_subpackage/navigation_record/index"
   ],
   "window": {
     "navigationBarTextStyle": "black",

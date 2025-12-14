@@ -1,7 +1,10 @@
 {
-  "usingComponents": {
-    "t-icon": "tdesign-miniprogram/icon/icon"
-  },
+    "usingComponents": {
+      "t-icon": "tdesign-miniprogram/icon/icon",
+      "t-dialog": "tdesign-miniprogram/dialog/dialog",
+      "t-input": "tdesign-miniprogram/input/input",
+      "t-button": "tdesign-miniprogram/button/button"
+    },
   "navigationBarTitleText": "寻味金陵",
   "navigationStyle": "default",
   "navigationBarBackgroundColor": "#FFFFFF",

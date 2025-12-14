@@ -12,18 +12,17 @@
   bindtap="onMapTap"
   enable-satellite="{{enableSatellite}}"
 >
-  </map>
+</map>
 
 <view class="ui-layer">
   
   <view class="top-bar">
     <t-icon name="view-list" size="48rpx" color="#666" />
-    
     <view class="search-box" bindtap="onSearch">
       <t-icon name="search" size="40rpx" color="#999" class="search-icon" />
       <text class="search-placeholder">搜索美食或地点</text>
     </view>
-    <t-icon name="notification" size="48rpx" color="#666" />
+    <t-icon name="notification" size="48rpx" color="#666" bindtap="onNotificationTap" />
   </view>
 
   <view class="map-controls">
@@ -35,6 +34,27 @@
     </view>
   </view>
 
+  <view class="shop-popup-card {{currentShop ? 'show' : ''}}" wx:if="{{currentShop}}" bindtap="onPopupCardTap">
+    <view class="popup-image" style="background-color: {{currentShop.imageColor}};">
+      <view class="placeholder-text">{{currentShop.name[0]}}</view> 
+    </view>
+    <view class="popup-info">
+      <view class="popup-header">
+        <text class="popup-name">{{currentShop.name}}</text>
+      </view>
+      <view class="popup-meta">
+        <text class="popup-score">{{currentShop.rating}}分</text>
+        <text class="popup-price">¥{{currentShop.price}}/人</text>
+      </view>
+      <view class="popup-tags">
+        <text class="popup-tag" wx:if="{{currentShop.tags[0]}}">{{currentShop.tags[0]}}</text>
+        <text class="popup-distance">{{currentShop.distance}}</text>
+      </view>
+    </view>
+    <view class="popup-arrow">
+      <t-icon name="chevron-right" size="48rpx" color="#ccc" />
+    </view>
+  </view>
   <view class="bottom-sheet">
     
     <scroll-view scroll-x class="filter-scroll" enable-flex>
@@ -49,11 +69,17 @@
       </block>
     </scroll-view>
 
-
     <scroll-view scroll-y class="restaurant-scroll" style="height: 50vh;">
       <view class="restaurant-list">
         <block wx:for="{{restaurants}}" wx:key="id">
-          <view class="restaurant-card" id="card-{{item.id}}">
+          
+          <view 
+            class="restaurant-card" 
+            id="card-{{item.id}}" 
+            bindtap="onShopCardTap" 
+            data-id="{{item.id}}"
+          >
+            
             <view class="card-content">
               <view class="card-image" style="background-color: {{item.imageColor}}"></view>
               <view class="card-info">
@@ -76,10 +102,11 @@
             </view>
             
             <view class="card-actions">
-              <view class="action-btn" bindtap="onNavigate"><t-icon name="navigation-arrow" size="40rpx" color="#666" /></view>
-              <view class="action-btn" bindtap="onFavorite"><t-icon name="heart" size="40rpx" color="#666" /></view>
-              <view class="action-btn" bindtap="onCall"><t-icon name="call" size="40rpx" color="#666" /></view>
+              <view class="action-btn" catchtap="onNavigate"><t-icon name="navigation-arrow" size="40rpx" color="#666" /></view>
+              <view class="action-btn" catchtap="onFavorite"><t-icon name="heart" size="40rpx" color="#666" /></view>
+              <view class="action-btn" catchtap="onCall"><t-icon name="call" size="40rpx" color="#666" /></view>
             </view>
+
           </view>
         </block>
         <view style="height: 120rpx;"></view>

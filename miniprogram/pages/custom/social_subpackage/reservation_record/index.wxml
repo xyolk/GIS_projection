@@ -1,0 +1,55 @@
+<view class="container">
+
+<view class="record-list" wx:if="{{list.length > 0}}">
+  <block wx:for="{{list}}" wx:key="id">
+    
+    <t-swipe-cell right="{{rightBtn}}">
+      
+      <view 
+        class="record-card" 
+        bindtap="onTapItem" 
+        data-shopid="{{item.shopId}}"
+      >
+        <view class="shop-img-box">
+          <t-image src="{{item.shopImage}}" width="100%" height="100%" mode="aspectFill" shape="round" />
+        </view>
+        
+        <view class="info-box">
+          <view class="shop-name text-ellipsis">{{item.shopName}}</view>
+          
+          <view class="info-row">
+            <t-icon name="time" size="32rpx" color="#999" />
+            <text class="info-text">{{item.time}}</text>
+          </view>
+          
+          <view class="info-row">
+            <t-icon name="user" size="32rpx" color="#999" />
+            <text class="info-text">{{item.peopleCount}}人 / 大厅座</text>
+          </view>
+
+          <view class="card-footer">
+            <t-tag variant="light" theme="{{statusColors[item.status]}}" shape="round" size="small">
+              {{item.statusText}}
+            </t-tag>
+          </view>
+        </view>
+
+      </view>
+
+      <view slot="right" class="swipe-right-btn delete-btn" catchtap="onDeleteItem" data-id="{{item.id}}">
+        删除
+      </view>
+
+    </t-swipe-cell>
+  </block>
+  
+  <view class="no-more">仅展示最近半年的预定记录</view>
+</view>
+
+<view class="empty-state" wx:if="{{!isLoading && list.length === 0}}">
+  <t-icon name="calendar" size="96rpx" color="#e0e0e0" />
+  <view class="empty-text">暂无预定记录</view>
+  <t-button theme="primary" t-class="go-book-btn" size="small" bindtap="onGoExplore">去探索美食</t-button>
+</view>
+
+</view>

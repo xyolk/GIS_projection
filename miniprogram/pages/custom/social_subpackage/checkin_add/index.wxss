@@ -1,0 +1,224 @@
+/* pages/custom/social_subpackage/checkin_add/index.wxss */
+
+/* ================== 页面基础 ================== */
+page {
+  background-color: #f5f5f5;
+  font-family: "Songti SC", "SimSun", serif;
+  box-sizing: border-box;
+}
+
+.page-container {
+  padding: 30rpx;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom)); /* 底部安全区适配 */
+}
+
+/* ================== 顶部打卡卡片 ================== */
+.checkin-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(255, 152, 0, 0.1);
+  margin-bottom: 40rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 顶部装饰线 */
+.checkin-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8rpx;
+  background: linear-gradient(90deg, #ff9800, #ffcc80);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.header-left { display: flex; align-items: center; gap: 10rpx; }
+.header-title { font-size: 26rpx; color: #ff9800; font-weight: bold; }
+.header-change { font-size: 24rpx; color: #999; display: flex; align-items: center; }
+
+.shop-name { font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 10rpx; }
+.shop-meta { display: flex; align-items: center; gap: 16rpx; font-size: 24rpx; color: #666; }
+.meta-tag { background: #f5f5f5; padding: 2rpx 10rpx; border-radius: 8rpx; }
+
+/* 虚线分割 */
+.divider-dashed {
+  height: 1px;
+  border-top: 2rpx dashed #eee;
+  margin: 30rpx 0;
+}
+
+/* ================== Action Dock (左右分栏) ================== */
+.action-dock {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 顶部对齐 */
+  margin-bottom: 40rpx;
+}
+
+/* 左侧：心情 Dock */
+.mood-dock {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  margin-right: 20rpx; /* 与右侧保持距离 */
+}
+
+/* 右侧：照片 Dock */
+.photo-dock {
+  width: 170rpx; 
+  flex-shrink: 0; /* 防止被挤压 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* 左侧分割线，增强视觉分区 */
+  border-left: 2rpx solid #f0f0f0; 
+  padding-left: 20rpx;
+}
+
+.dock-label {
+  font-size: 24rpx; 
+  color: #999; 
+  margin-bottom: 20rpx; 
+  display: block;
+}
+
+/* 心情标签网格 */
+.mood-grid { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 16rpx; 
+}
+
+/* TDesign 标签样式覆盖 */
+.mood-tag {
+  --td-tag-checked-color: #ff9800 !important;
+  --td-tag-checked-bg-color: #fff3e0 !important;
+  --td-tag-checked-border-color: #ff9800 !important;
+  padding: 8rpx 16rpx !important;
+  border-radius: 12rpx !important;
+  font-size: 24rpx !important;
+}
+
+/* ================== 上传组件 (重点修改部分) ================== */
+
+/* 1. TDesign 组件容器设置 
+   这里只定义尺寸变量，让组件知道上传后的图片该显示多大
+*/
+.wechat-upload-container {
+  --td-upload-width: 140rpx;
+  --td-upload-height: 140rpx;
+  --td-upload-radius: 16rpx;
+}
+
+/* 2. 自定义加号按钮 (Slot 内容)
+   这是一个完全受控的 Flex 盒子，完美解决居中和背景问题
+*/
+.custom-add-btn {
+  width: 140rpx;
+  height: 140rpx;
+  background-color: #fff8e1; /* 淡黄背景 */
+  border: 2rpx dashed #ffe0b2; /* 橙色虚线 */
+  border-radius: 16rpx;
+  
+  /* 核心：Flex 绝对居中 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+/* 点击时的反馈效果 */
+.custom-add-btn:active {
+  background-color: #ffecb3; 
+  transform: scale(0.98);
+}
+
+/* 3. 加号图标颜色 */
+.add-icon {
+  color: #ff9800 !important;
+}
+
+/* ================== 确认打卡按钮 ================== */
+.checkin-btn {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 8rpx 16rpx rgba(245, 124, 0, 0.3) !important;
+  font-size: 32rpx !important;
+  font-weight: bold !important;
+  border-radius: 44rpx !important; /* 更圆润 */
+  
+  /* 强制 Flex 居中 */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 24rpx 0 !important;
+}
+
+/* 去除按钮点击后的默认黑框/背景 */
+.checkin-btn::after { border: none !important; }
+.checkin-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+
+/* ================== 历史足迹区 ================== */
+.history-container { padding: 0 10rpx; }
+
+.history-title {
+  font-size: 32rpx; font-weight: bold; color: #333; margin-bottom: 30rpx;
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.history-stats { font-size: 24rpx; color: #999; font-weight: normal; }
+
+.timeline-item { display: flex; min-height: 140rpx; }
+
+.time-col {
+  width: 90rpx;
+  display: flex; flex-direction: column; align-items: flex-end;
+  padding-right: 20rpx; text-align: right;
+  flex-shrink: 0;
+}
+.date-text { font-size: 28rpx; font-weight: bold; color: #333; }
+.time-text { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+
+.line-col {
+  width: 40rpx;
+  display: flex; flex-direction: column; align-items: center; position: relative;
+  flex-shrink: 0;
+}
+.dot {
+  width: 16rpx; height: 16rpx; background: #ddd; border-radius: 50%;
+  margin-top: 12rpx; z-index: 2;
+}
+.dot.active { background: #ff9800; box-shadow: 0 0 0 6rpx rgba(255, 152, 0, 0.2); }
+.line {
+  position: absolute; top: 28rpx; bottom: 0; width: 2rpx; background: #eee; z-index: 1;
+}
+
+.content-col { flex: 1; padding-bottom: 40rpx; }
+.record-card {
+  background: white; padding: 24rpx;
+  border-radius: 0 16rpx 16rpx 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.02);
+}
+.record-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+.record-shop { font-size: 28rpx; color: #333; font-weight: bold; max-width: 70%; }
+
+/* 图片缩略图 */
+.record-body { margin-top: 16rpx; }
+.record-thumb {
+  width: 160rpx; height: 160rpx;
+  border-radius: 12rpx;
+  background-color: #f0f0f0;
+}

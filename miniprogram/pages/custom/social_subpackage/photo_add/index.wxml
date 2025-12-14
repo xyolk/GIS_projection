@@ -1,0 +1,80 @@
+<view class="page-container">
+
+<scroll-view scroll-y class="scroll-content">
+  
+  <view class="input-wrapper">
+    <t-textarea 
+      t-class="no-border-textarea"
+      placeholder="这一刻的想法..." 
+      placeholder-style="color:#ccc;"
+      disableDefaultPadding="{{true}}"
+      autosize="{{ {minRows: 4, maxRows: 10} }}"
+      value="{{content}}"
+      bind:change="onInput"
+      maxlength="1000"
+    />
+  </view>
+
+  <view class="upload-wrapper">
+    <t-upload
+      mediaType="{{['image']}}"
+      max="{{9}}"
+      files="{{fileList}}"
+      bind:add="handleAdd"
+      bind:remove="handleRemove"
+      draggable
+    />
+  </view>
+
+  <view class="divider-gap"></view>
+
+  <t-cell-group theme="card">
+    
+    <t-cell hover arrow bindtap="chooseLocation">
+    <view slot="left-icon" class="cell-icon-wrapper">
+      <t-icon name="location" size="40rpx" color="{{location ? '#ff9800' : '#333'}}" />
+    </view>
+    
+    <view slot="title" class="cell-title {{location ? 'highlight' : ''}}">
+      {{locationText}}
+    </view>
+
+    <view slot="right-icon" wx:if="{{location}}" catchtap="clearLocation" class="clear-icon-box">
+       <t-icon name="close-circle" size="36rpx" color="#ccc" />
+    </view>
+  </t-cell>
+
+  <t-cell hover arrow bindtap="choosePrivacy">
+    <view slot="left-icon" class="cell-icon-wrapper">
+      <t-icon name="user" size="40rpx" color="#333" />
+    </view>
+    <view slot="title" class="cell-title">谁可以看</view>
+    <view slot="note" class="cell-note">{{privacyText}}</view>
+  </t-cell>
+
+  <t-cell hover arrow bindtap="chooseMention">
+    <view slot="left-icon" class="cell-icon-wrapper">
+      <t-icon name="notification" size="40rpx" color="#333" />
+    </view>
+    <view slot="title" class="cell-title">提醒谁看</view>
+    <view slot="note" class="cell-note highlight">{{mentionText}}</view>
+  </t-cell>
+
+  </t-cell-group>
+  
+  <view style="height: 180rpx;"></view>
+</scroll-view>
+
+<view class="footer-bar">
+  <t-button 
+    theme="primary" 
+    size="large" 
+    block 
+    shape="round"
+    bindtap="submitPost"
+    disabled="{{isPublishing}}"
+    t-class="submit-btn"
+  >发布</t-button>
+</view>
+
+</view>

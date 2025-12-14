@@ -1,6 +1,6 @@
 /** pages/custom/diner_explore/index.wxss */
 
-/* 全局布局 */
+/* --- 全局布局 --- */
 page {
   height: auto; 
   min-height: 100vh;
@@ -14,7 +14,7 @@ page {
   position: relative;
 }
 
-/* 1. 顶部搜索栏 */
+/* --- 1. 顶部搜索栏 --- */
 .top-bar {
   background-color: #ffffff;
   padding: 20rpx 30rpx;
@@ -27,13 +27,11 @@ page {
   top: 0;
   left: 0;
   width: 100%;
-  box-sizing: border-box; /* 确保 padding 不撑大宽度 */
-  z-index: 100; /* 层级最高 */
-
-  pointer-events: auto
+  box-sizing: border-box; 
+  z-index: 100;
+  pointer-events: auto;
 }
 
-/* 搜索框内部样式保持不变 */
 .search-box {
   flex: 1;
   background-color: #f3f4f6;
@@ -51,19 +49,16 @@ page {
   margin-left: 10rpx;
 }
 
-/* 2. 地图区域 */
-/* 真地图组件样式 */
+/* --- 2. 地图区域 --- */
 .map-bg {
   width: 100vw;
   height: 100vh;
-  position: fixed; /* 固定在最底层 */
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 0;
 }
 
-/* UI 悬浮层容器 */
-/* 对应 WXML 中的 <view class="ui-layer"> */
 .ui-layer {
   position: absolute;
   top: 0;
@@ -71,19 +66,18 @@ page {
   width: 100%;
   height: 100%;
   z-index: 10;
-  pointer-events: none; /* 关键！让点击事件穿透空白区域到达地图 */
+  pointer-events: none; /* 让点击穿透到地图 */
 }
 
-/* 地图上的控件按钮 */
 .map-controls {
   position: absolute;
-  top: 240rpx; /* 调整位置，避开顶部搜索栏 */
+  top: 240rpx;
   right: 30rpx;
   display: flex;
   flex-direction: column;
   gap: 20rpx;
   z-index: 10;
-  pointer-events: auto; /* 关键：恢复按钮点击 */
+  pointer-events: auto;
 }
 
 .control-btn {
@@ -97,41 +91,116 @@ page {
   box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.1);
 }
 
-/* 3. 底部面板 (核心修改区域) */
+/* --- 悬浮卡片 (Popup Card) --- */
+/* 【关键修复1】移除了 opacity: 0，确保只要渲染就一定可见 */
+.shop-popup-card {
+  position: absolute;
+  left: 30rpx;
+  right: 30rpx;
+  bottom: 36vh;        
+  
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.15);
+  z-index: 999; /* 提高层级，确保在最上层 */
+  
+  pointer-events: auto; /* 恢复点击 */
+  
+  display: flex;
+  align-items: center;
+}
+
+.popup-image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: rgba(255,255,255,0.9);
+  flex-shrink: 0;
+}
+
+.popup-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100rpx;
+  overflow: hidden;
+}
+
+.popup-header { display: flex; align-items: center; }
+
+.popup-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popup-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 24rpx;
+  margin-top: 4rpx;
+}
+
+.popup-score { color: #ff9800; font-weight: bold; }
+.popup-price { color: #666; }
+
+.popup-tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: auto;
+}
+
+.popup-tag {
+  background: #f3f4f6;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  color: #666;
+}
+
+.popup-arrow { padding-left: 10rpx; }
+
+
+/* --- 3. 底部面板 --- */
 .bottom-sheet {
   background-color: white;
   border-top-left-radius: 40rpx;
   border-top-right-radius: 40rpx;
   padding: 30rpx 30rpx 0 30rpx;
   box-shadow: 0 -5rpx 20rpx rgba(0,0,0,0.05);
-  
   position: relative;
-  z-index: 1; 
-  
-  /* 这里决定了初始状态下地图露出多少 */
-  margin-top: 60vh; 
+  z-index: 1;
+  margin-top: 65vh;
   min-height: 100vh; 
   padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
-  
   display: flex;
   flex-direction: column;
   pointer-events: auto;
 }
 
-/* 筛选标签容器 */
-/* 我们需要给它加一个包裹层来实现 sticky，或者直接作用在 filter-scroll 上 */
 .filter-scroll {
   display: flex;
   flex-direction: row;
   height: 80rpx;
   flex-shrink: 0;
   margin-bottom: 20rpx;
-  
-  /* 关键修改：粘性定位 */
   position: sticky;
-  top: 110rpx; 
+  top: 0;
   z-index: 50; 
-  
   background-color: white; 
   margin-left: -30rpx;
   margin-right: -30rpx;
@@ -140,14 +209,8 @@ page {
   padding-top: 10rpx;
 }
 
-.filter-scroll::-webkit-scrollbar {
-  display: none;
-  width: 0;
-  height: 0;
-  color: transparent;
-}
+.filter-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; color: transparent; }
 
-/* 标签样式 */
 .filter-tag {
   padding: 12rpx 30rpx;
   background-color: #f3f4f6;
@@ -168,24 +231,8 @@ page {
   box-shadow: 0 4rpx 10rpx rgba(255, 152, 0, 0.3);
 }
 
-/* 推荐标题 */
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20rpx;
-  flex-shrink: 0;
-}
+.restaurant-list { height: auto; }
 
-.section-title { font-size: 36rpx; font-weight: bold; color: #1f2937; }
-.section-more { display: flex; align-items: center; font-size: 24rpx; color: #ff9800; }
-
-/* 餐厅列表 */
-.restaurant-list {
-  height: auto;
-}
-
-/* 卡片样式保持不变 */
 .restaurant-card {
   background-color: white;
   border-radius: 24rpx;
@@ -194,9 +241,13 @@ page {
   overflow: hidden;
   border: 1px solid #f3f4f6;
 }
-/* ... card-content, card-image, shop-name 等细节保持不变 ... */
+
 .card-content { display: flex; padding: 24rpx; }
-.card-image { width: 160rpx; height: 160rpx; border-radius: 16rpx; margin-right: 24rpx; flex-shrink: 0; }
+.card-image { 
+  width: 160rpx; height: 160rpx;
+  border-radius: 16rpx;
+  margin-right: 24rpx; flex-shrink: 0; 
+}
 .card-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .shop-name { font-size: 32rpx; font-weight: bold; color: #333; }
 .shop-rating-row { display: flex; align-items: center; font-size: 24rpx; margin-top: 8rpx; }
@@ -208,10 +259,13 @@ page {
 .shop-price-row { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 10rpx; }
 .price-text { color: #ff9800; font-weight: 600; font-size: 28rpx; }
 .distance-text { font-size: 22rpx; color: #999; }
-.card-actions { background-color: #f9fafb; padding: 16rpx 24rpx; display: flex; justify-content: flex-end; gap: 30rpx; }
+.card-actions { 
+  background-color: #f9fafb;
+  padding: 16rpx 24rpx; display: flex; justify-content: flex-end; gap: 30rpx; 
+}
 .action-btn { display: flex; align-items: center; }
 
-/* 4. 底部导航栏 */
+/* --- 4. 底部导航栏 --- */
 .tab-bar {
   position: fixed;
   bottom: 0;
@@ -225,7 +279,7 @@ page {
   z-index: 100;
   pointer-events: auto;
 }
-/* ... tab-item 等保持不变 ... */
+
 .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #9ca3af; transition: all 0.3s; }
 .tab-item.active { color: #ff9800; }
 .tab-text { font-size: 20rpx; margin-top: 6rpx; }

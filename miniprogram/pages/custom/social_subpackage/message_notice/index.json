@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "消息通知",
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "t-avatar": "tdesign-miniprogram/avatar/avatar",
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "t-swipe-cell": "tdesign-miniprogram/swipe-cell/swipe-cell",
+    "t-button": "tdesign-miniprogram/button/button"
+  }
+}

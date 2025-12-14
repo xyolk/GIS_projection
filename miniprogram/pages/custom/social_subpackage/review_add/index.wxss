@@ -1,0 +1,155 @@
+/* 页面背景 */
+page {
+  background-color: #f5f5f5;
+  font-family: "Songti SC", "SimSun", serif; /* 保持字体一致 */
+}
+
+/* 1. 自定义导航栏 */
+.custom-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: white;
+  z-index: 100;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+}
+.nav-content {
+  height: 44px; /* 标准导航栏高度 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20rpx;
+}
+.nav-title { font-size: 34rpx; font-weight: bold; }
+.back-btn, .nav-placeholder { width: 60rpx; display: flex; align-items: center; }
+
+/* 2. 通用卡片样式 */
+.section-card {
+  background: white;
+  margin: 24rpx;
+  padding: 30rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.02);
+}
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-bottom: 24rpx;
+  color: #333;
+}
+
+/* 3. 店铺选择相关 */
+.sub-label {
+  font-size: 24rpx;
+  color: #999;
+  margin: 20rpx 0 16rpx 0;
+  display: block;
+}
+.shop-item-mini {
+  display: flex;
+  align-items: center;
+  background: #f9f9f9;
+  padding: 16rpx;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+}
+.shop-item-mini:active { background: #f0f0f0; }
+.shop-img {
+  width: 80rpx; height: 80rpx;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
+}
+.shop-info { flex: 1; display: flex; flex-direction: column; }
+.shop-dist { font-size: 22rpx; color: #999; margin-top: 4rpx; }
+
+/* 已选店铺样式 */
+.selected-shop-card {
+  display: flex;
+  align-items: center;
+  background: #fff3e0; /* 橙色淡背景 */
+  padding: 20rpx;
+  border-radius: 16rpx;
+  border: 1px solid #ffcc80;
+}
+.shop-img-lg {
+  width: 100rpx; height: 100rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+}
+.shop-name-lg { font-size: 32rpx; font-weight: bold; color: #333; }
+.shop-sub { font-size: 24rpx; color: #666; margin-top: 8rpx; display: block; }
+.shop-main { flex: 1; }
+
+/* 颜色占位 (配合原代码) */
+.bg-orange-light { background-color: #ffe0b2; }
+.bg-teal-light { background-color: #b2dfdb; }
+.bg-red-light { background-color: #ffcdd2; }
+
+/* 4. 评分区域 */
+.rating-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40rpx;
+}
+.rating-label { font-size: 32rpx; font-weight: bold; margin-right: 30rpx; color: #333; }
+.rating-text { margin-left: 24rpx; color: #ff9800; font-weight: bold; font-size: 32rpx; }
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+/* 覆盖 TDesign Tag 选中样式为橙色 */
+.custom-tag {
+  --td-tag-checked-color: #ff9800 !important; 
+  --td-tag-checked-border-color: #ff9800 !important;
+  --td-tag-checked-bg-color: #fff3e0 !important;
+
+  padding: 12rpx 32rpx !important; 
+  font-size: 28rpx !important;     
+  border-radius: 30rpx !important;
+  border: 1px solid #f0f0f0;
+}
+
+/* 5. 输入与上传 */
+.custom-textarea {
+  padding: 0 !important; /* 去除组件默认内边距 */
+  min-height: 200rpx;
+  font-size: 30rpx;
+}
+.upload-box {
+  margin-top: 30rpx;
+}
+
+/* 6. 底部固定栏 */
+.footer-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  padding: 20rpx 30rpx calc(20rpx + env(safe-area-inset-bottom));
+  box-shadow: 0 -4rpx 20rpx rgb(255, 255, 255);
+  z-index: 99;
+}
+
+/* 覆盖 TDesign 按钮的主题色 */
+.submit-btn {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+
+   /* 文字颜色 */
+   color: white !important;
+   font-size: 34rpx !important;
+   font-weight: bold !important;
+   letter-spacing: 2rpx; /* 字间距 */
+   
+   border: none !important;
+   border-radius: 50rpx !important; 
+   box-shadow: 0 10rpx 20rpx rgba(245, 124, 0, 0.3) !important; 
+}
+
+.submit-btn::after {
+  border: none !important;
+}
+
+.submit-btn:active {
+  transform: scale(0.98); /* 微微缩小 */
+  opacity: 0.9;
+}
